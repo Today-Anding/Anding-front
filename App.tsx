@@ -1,51 +1,10 @@
 import * as React from 'react';
-import {Button, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-function HomeScreen({navigation}: {navigation: any}) {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details0"
-        onPress={() => navigation.navigate('Details')}
-      />
-      <Button
-        title="Go to Details1"
-        onPress={() => navigation.navigate('Details1')}
-      />
-      <Button
-        title="Go to Details2"
-        onPress={() => navigation.navigate('Details2')}
-      />
-    </View>
-  );
-}
-
-function DetailsScreen() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen</Text>
-    </View>
-  );
-}
-
-function DetailsScreen1() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen1</Text>
-    </View>
-  );
-}
-
-function DetailsScreen2() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen2</Text>
-    </View>
-  );
-}
+import HomeScreen from './src/screens/HomeScreen';
+import DetailsScreen from './src/screens/DetailScreen';
+import DetailsScreen1 from './src/screens/DetailScreen1';
+import DetailsScreen2 from './src/screens/DetailScreen2';
 
 const Stack = createNativeStackNavigator();
 
