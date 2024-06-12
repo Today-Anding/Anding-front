@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/COOPBL.ttf",
+      "sha1": "7fb4a960084a495a65ae7b1edb59142cb31b2e1f"
+    },
+    {
+      "path": "src/assets/fonts/PartialSansKR-Regular.ttf",
+      "sha1": "64b77299edb7c90efe86527cf301577d00385a6b"
+    },
+    {
+      "path": "src/assets/fonts/UhBee jung BOLD.ttf",
+      "sha1": "5b22c4462bdd672d3f1e8dd5f83771498e987cc2"
+    },
+    {
+      "path": "src/assets/fonts/UhBee jung.ttf",
+      "sha1": "10a23db318763cc93e7bbf52bdddc05ef88d20a9"
+    }
+  ]
+}
