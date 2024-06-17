@@ -23,7 +23,7 @@ const LandingScreen: React.FC<Props> = ({navigation}) => {
         // eslint-disable-next-line react-native/no-inline-styles
         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Title>What Is Your</Title>
-        <StyledButton onPress={() => navigation.navigate('StorySelect')}>
+        <StyledButton onPress={() => navigation.navigate('Main')}>
           <ButtonText>Anding</ButtonText>
         </StyledButton>
       </LinearGradient>

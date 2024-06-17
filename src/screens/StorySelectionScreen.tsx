@@ -3,10 +3,9 @@ import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
 import {WhiteLogo} from '../components/Logo';
 import {White16px} from '../components/Text';
-import StorySelectBox from '../components/PinkContainer';
+import StorySelectBox from '../components/StorySelectBox';
 
 const StorySelectScreenContainer = styled.View`
   flex: 1;
@@ -35,20 +34,25 @@ type StoryItem = {
   route: keyof RootStackParamList;
 };
 
+type RootStackParamList = {
+  StorySelect: undefined;
+  StoryCreate: undefined;
+};
+
 const StorySelectScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const storyData: StoryItem[] = [
-    {id: '1', title: '별에서 온 그대', route: 'StoryDetail1'},
-    {id: '2', title: '별에서 온 그대', route: 'StoryDetail2'},
-    {id: '3', title: '별에서 온 그대', route: 'StoryDetail3'},
-    {id: '4', title: '별에서 온 그대', route: 'StoryDetail4'},
-    {id: '5', title: '별에서 온 그대', route: 'StoryDetail5'},
-    {id: '6', title: '별에서 온 그대', route: 'StoryDetail6'},
-    {id: '7', title: '별에서 온 그대', route: 'StoryDetail7'},
-    {id: '8', title: '별에서 온 그대', route: 'StoryDetail8'},
-    {id: '9', title: '별에서 온 그대', route: 'StoryDetail9'},
-    {id: '10', title: '별에서 온 그대', route: 'StoryDetail10'},
+    {id: '1', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '2', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '3', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '4', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '5', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '6', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '7', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '8', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '9', title: '별에서 온 그대', route: 'StoryCreate'},
+    {id: '10', title: '별에서 온 그대', route: 'StoryCreate'},
   ];
 
   const renderItem = ({item}: {item: StoryItem}) => (
@@ -71,7 +75,6 @@ const StorySelectScreen: React.FC = () => {
           data={storyData}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          // eslint-disable-next-line react-native/no-inline-styles
           contentContainerStyle={{paddingBottom: 16}}
         />
       </ContentContainer>

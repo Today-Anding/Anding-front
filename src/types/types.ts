@@ -6,16 +6,8 @@ export type StackParamList = {
   ComponentTest: undefined;
   SignUpName: undefined;
   StorySelect: undefined;
+  StoryCreate: undefined;
 };
 export type RootStackParamList = {
-  StoryDetail1: undefined;
-  StoryDetail2: undefined;
-  StoryDetail3: undefined;
-  StoryDetail4: undefined;
-  StoryDetail5: undefined;
-  StoryDetail6: undefined;
-  StoryDetail7: undefined;
-  StoryDetail8: undefined;
-  StoryDetail9: undefined;
-  StoryDetail10: undefined;
+  Main: undefined;
 };

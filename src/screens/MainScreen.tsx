@@ -10,6 +10,7 @@ import {
   White12px,
   White16px,
 } from '../components/Text';
+import CarouselComponent from '../components/CarouselComponent';
 
 const MainScreenBackgroundPink = styled.View`
   flex: 0.5;
@@ -55,6 +56,7 @@ export function MainScreen() {
           <Img139pxBox />
           <Img139pxBox />
         </ImgContainer>
+        <CarouselComponent />
         <White16px>오늘은 어떤 스토리를 작성할까요?</White16px>
         <White12px>이어 쓸 스토리를 선택해주세요!</White12px>
       </MainScreenBackgroundPink>
