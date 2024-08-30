@@ -1,7 +1,7 @@
 // GobackButton.tsx
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const GobackButton: React.FC = () => {
   const navigation = useNavigation();

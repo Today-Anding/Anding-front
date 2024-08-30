@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components/native';
-import {Black14px, Pink12px} from './Text';
-import {StyleSheet} from 'react-native';
+import { Black14px, Pink12px } from '../text/Text';
+import { StyleSheet } from 'react-native';
 
 interface StorySelectBoxProps {
   title: string;
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const StorySelectBox: FC<StorySelectBoxProps> = ({title}) => {
+const StorySelectBox: FC<StorySelectBoxProps> = ({ title }) => {
   return (
     <StorySelectBoxContainer style={styles.shadow}>
       <StorySelectBoxInnerContainer>

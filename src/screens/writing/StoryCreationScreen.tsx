@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {WhiteLogo} from '../components/Logo';
-import {White12px, White16px} from '../components/Text';
-import StoryCreateBox from '../components/StoryCreateBox';
+import { WhiteLogo } from '../../components/logo/Logo';
+import { White12px, White16px } from '../../components/text/Text';
+import StoryCreateBox from '../../components/storycreatebox/StoryCreateBox';
 
 const StorySelectScreenContainer = styled.View`
   flex: 1;
@@ -27,8 +27,9 @@ const StoryCreationScreen: React.FC = () => {
     <StorySelectScreenContainer>
       <StorySelectBackground
         colors={['#ff9999', '#ff4e4e']}
-        start={{x: 0, y: 0}}
-        end={{x: 0, y: 1}}>
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+      >
         <WhiteLogo />
         <White16px>당신의 앤딩을 작성해주세요.</White16px>
         <White12px>“별에서 온 그대”는 이렇게 끝났습니다.</White12px>

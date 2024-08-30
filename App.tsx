@@ -1,95 +1,115 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import styled from 'styled-components/native';
-import LandingScreen from './src/screens/LandingScreen';
-import MainScreen from './src/screens/MainScreen';
-import DetailsScreen2 from './src/screens/DetailScreen2';
-import ComponentTest from './src/screens/ComponentTest';
-import SignUpName from './src/screens/SignUp/SignUpName';
-import SignUpEmail from './src/screens/SignUp/SignUpEmail';
-import StorySelectScreen from './src/screens/StorySelectionScreen';
-import StoryCreationScreen from './src/screens/StoryCreationScreen';
+import React from 'react';
+import type { PropsWithChildren } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
-const Stack = createNativeStackNavigator();
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-function App() {
-  const navigationRef = useRef(null);
-  const [showTabBar, setShowTabBar] = useState(false);
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
 
-  const routeNamesToShowTabBar = ['Main', 'Details2', 'SignUpName'];
-
-  useEffect(() => {
-    const onStateChange = () => {
-      const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
-      setShowTabBar(routeNamesToShowTabBar.includes(currentRouteName));
-    };
-
-    const unsubscribe = navigationRef.current?.addListener(
-      'state',
-      onStateChange,
-    );
-
-    return () => {
-      unsubscribe?.();
-    };
-  }, [navigationRef, routeNamesToShowTabBar]);
-
+function Section({ children, title }: SectionProps): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="ComponentTest" component={ComponentTest} />
-        <Stack.Screen name="Details2" component={DetailsScreen2} />
-        <Stack.Screen name="SignUpName" component={SignUpName} />
-        <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
-        <Stack.Screen name="StorySelect" component={StorySelectScreen} />
-        <Stack.Screen name="StoryCreate" component={StoryCreationScreen} />
-      </Stack.Navigator>
-      {showTabBar && (
-        <TabBar>
-          <CustomButton
-            onPress={() => navigationRef.current?.navigate('Details2')}>
-            <ButtonText>Details</ButtonText>
-          </CustomButton>
-          <CustomButton onPress={() => navigationRef.current?.navigate('Main')}>
-            <ButtonText>Home</ButtonText>
-          </CustomButton>
-          <CustomButton
-            onPress={() => navigationRef.current?.navigate('SignUpName')}>
-            <ButtonText>SignUp</ButtonText>
-          </CustomButton>
-        </TabBar>
-      )}
-    </NavigationContainer>
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}
+      >
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}
+      >
+        {children}
+      </Text>
+    </View>
   );
 }
 
-const TabBar = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  padding-vertical: 10px;
-  background-color: #ffffff;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
+function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
 
-const CustomButton = styled.TouchableOpacity`
-  flex: 1;
-  padding: 10px;
-  background-color: #ff7070;
-  margin: 5px;
-  border-radius: 5px;
-  align-items: center;
-`;
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
 
-const ButtonText = styled.Text`
-  color: white;
-  font-size: 12px;
-`;
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}
+      >
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}
+        >
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+});
 
 export default App;

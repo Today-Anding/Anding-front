@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import {Img70pxBox} from './ImgContainer';
-import {Black10px, Black14px} from './Text';
+import { Img70pxBox } from '../imagecontainer/ImgContainer';
+import { Black10px, Black14px } from '../text/Text';
 
 const ListDiv = styled.View`
   width: 271px;

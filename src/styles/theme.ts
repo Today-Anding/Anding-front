@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {DefaultTheme} from 'styled-components/native';
+import { DefaultTheme } from 'styled-components/native';
 
 const theme: DefaultTheme = {
   mainBlue: '#065e85',

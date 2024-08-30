@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   Home: undefined;
@@ -24,7 +24,6 @@ const StyledButton = styled.TouchableOpacity`
   margin-top: 30px;
 `;
 
-// SmallButton을 위한 StyledButton 커스텀
 const StyledSmallButton = styled.TouchableOpacity`
   width: 62px;
   height: 24px;
@@ -53,7 +52,7 @@ const SmallButtonText = styled.Text`
   color: #000;
 `;
 
-export function Button({navigateTo, text}: ButtonProps) {
+export function Button({ navigateTo, text }: ButtonProps) {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (
@@ -63,7 +62,7 @@ export function Button({navigateTo, text}: ButtonProps) {
   );
 }
 
-export function SmallButton({navigateTo, text}: ButtonProps) {
+export function SmallButton({ navigateTo, text }: ButtonProps) {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (

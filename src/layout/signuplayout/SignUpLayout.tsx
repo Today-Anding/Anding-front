@@ -13,17 +13,17 @@ const TopLeftContainer = styled.View`
   top: 20px;
   left: 20px;
   flex: 1;
-  flex-direction: column; /* 올바른 속성명을 사용하세요 */
+  flex-direction: column;
   align-items: center;
 `;
 
 const CenterContainer = styled.View`
-  margin-top: 40px; /* 올바른 속성명을 사용하세요 */
+  margin-top: 40px;
   justify-content: center;
   align-items: center;
 `;
 
-const LayoutContainer = ({children}: {children: React.ReactNode}) => {
+const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
   return <Container>{children}</Container>;
 };
 
