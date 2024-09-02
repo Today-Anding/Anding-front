@@ -1,4 +1,3 @@
-// GobackButton.tsx
 import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +8,7 @@ const GobackButton: React.FC = () => {
   return (
     <TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}>
       <Image
-        source={require('./assets/images/BackArrow.png')}
+        source={require('../../assets/images/BackArrow.png')}
         style={styles.image}
       />
     </TouchableOpacity>
@@ -22,6 +21,8 @@ const styles = StyleSheet.create({
     height: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 20,
+    marginTop: 20,
   },
   image: {
     width: 24,

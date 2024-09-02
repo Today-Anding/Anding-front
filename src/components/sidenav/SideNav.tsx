@@ -14,16 +14,19 @@ const SideNav: React.FC<{ visible: boolean; onClose: () => void }> = ({
     <SidebarContainer>
       <CloseButton onPress={onClose}>X</CloseButton>
       <Button onPress={() => navigation.navigate('Details1')}>
-        <ButtonText>Anding 읽기 1</ButtonText>
+        <ButtonText>메인으로 돌아가기</ButtonText>
       </Button>
       <Button onPress={() => navigation.navigate('Details2')}>
-        <ButtonText>Anding 읽기 2</ButtonText>
+        <ButtonText>마이페이지</ButtonText>
       </Button>
       <Button onPress={() => navigation.navigate('Details3')}>
-        <ButtonText>Anding 읽기 3</ButtonText>
+        <ButtonText>랭킹페이지</ButtonText>
       </Button>
       <Button onPress={() => navigation.navigate('Details4')}>
-        <ButtonText>Anding 읽기 4</ButtonText>
+        <ButtonText>설정</ButtonText>
+      </Button>
+      <Button onPress={() => navigation.navigate('AuthSelectionScreen')}>
+        <ButtonText>로그인/회원가입</ButtonText>
       </Button>
     </SidebarContainer>
   );
@@ -34,10 +37,10 @@ export default SideNav;
 const SidebarContainer = styled.View`
   position: absolute;
   top: 0;
-  left: 0;
-  width: 250px;
+  right: 0;
+  width: 195px;
   height: 100%;
-  background-color: #fff;
+  background-color: #ff7d7d;
   border-right-width: 1px;
   border-right-color: #ccc;
   padding: 20px;
@@ -46,7 +49,7 @@ const SidebarContainer = styled.View`
 
 const CloseButton = styled.Text`
   font-size: 24px;
-  color: #000;
+  color: #fff;
   text-align: right;
   margin-bottom: 20px;
 `;
@@ -56,6 +59,9 @@ const Button = styled.TouchableOpacity`
 `;
 
 const ButtonText = styled.Text`
-  font-size: 18px;
-  color: #007bff;
+  color: #fff;
+  font-family: 'Noto Sans';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
 `;

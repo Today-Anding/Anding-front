@@ -5,23 +5,6 @@ import { WhiteLogo } from '../../components/logo/Logo';
 import { White12px, White16px } from '../../components/text/Text';
 import StoryCreateBox from '../../components/storycreatebox/StoryCreateBox';
 
-const StorySelectScreenContainer = styled.View`
-  flex: 1;
-  background-color: white;
-  gap: 16px;
-  align-items: center;
-`;
-
-const StorySelectBackground = styled(LinearGradient)`
-  position: absolute;
-  width: 100%;
-  height: 30%;
-  align-items: center;
-  justify-content: center;
-  z-index: -1;
-  gap: 16px;
-`;
-
 const StoryCreationScreen: React.FC = () => {
   return (
     <StorySelectScreenContainer>
@@ -41,3 +24,20 @@ const StoryCreationScreen: React.FC = () => {
 };
 
 export default StoryCreationScreen;
+
+const StorySelectScreenContainer = styled.View`
+  flex: 1;
+  background-color: white;
+  gap: 16px;
+  align-items: center;
+`;
+
+const StorySelectBackground = styled(LinearGradient)`
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+  gap: 16px;
+`;

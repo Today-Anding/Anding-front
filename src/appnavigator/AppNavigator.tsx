@@ -7,11 +7,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import { RootStackParamList } from '../types/types';
 import Splash from '../screens/splash/Splash';
-import { DetailsScreen2, Main, StorySelectScreen } from '../screens';
-import SignUpName from '../screens/signUp/SignUpName';
-import SignUpEmail from '../screens/signUp/SignUpEmail';
+import { StoryReadCategory, Main, StorySelectScreen } from '../screens';
+import SignUpEmail from '../screens/user/signUp/SignUpEmail';
 import StoryCreationScreen from '../screens/writing/StoryCreationScreen';
 import MyPage from '../screens/mypage/Mypage';
+import AuthSelectionScreen from '../screens/user/AuthSelectionScreen';
+import Login from '../screens/user/login/Login';
+import SignUp from '../screens/user/signUp/SignUp';
 
 // RootStackParamList 타입으로 스택 네비게이터를 생성합니다.
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,9 +30,14 @@ function AppNavigator() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const routeNamesToShowTabBar: (keyof RootStackParamList)[] = [
     'Main',
-    'Details2',
+    'StoryReadCategory',
     'SignUpName',
     'Mypage',
+    'AuthSelectionScreen',
+    'Login',
+    'SignUp',
+    'StoryWriteCreate',
+    'StoryWriteSelect',
   ];
 
   useEffect(() => {
@@ -71,19 +78,26 @@ function AppNavigator() {
       >
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Main" component={Main} />
-        <Stack.Screen name="Details2" component={DetailsScreen2} />
-        <Stack.Screen name="SignUpName" component={SignUpName} />
+        <Stack.Screen name="StoryReadCategory" component={StoryReadCategory} />
+        <Stack.Screen
+          name="AuthSelectionScreen"
+          component={AuthSelectionScreen}
+        />
+        <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
-        <Stack.Screen name="StorySelect" component={StorySelectScreen} />
-        <Stack.Screen name="StoryCreate" component={StoryCreationScreen} />
+        <Stack.Screen name="StoryWriteSelect" component={StorySelectScreen} />
+        <Stack.Screen name="StoryWriteCreate" component={StoryCreationScreen} />
         <Stack.Screen name="Mypage" component={MyPage} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
       {showTabBar && (
         <TabBar>
           <CustomButton onPress={() => navigationRef.current?.navigate('Main')}>
             <ButtonText>메인</ButtonText>
           </CustomButton>
-          <CustomButton onPress={() => navigationRef.current?.navigate('Main')}>
+          <CustomButton
+            onPress={() => navigationRef.current?.navigate('StoryReadCategory')}
+          >
             <ButtonText>앤딩 읽기</ButtonText>
           </CustomButton>
           <CustomButton

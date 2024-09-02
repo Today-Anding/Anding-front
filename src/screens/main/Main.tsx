@@ -48,11 +48,15 @@ const Main: React.FC = () => {
           <Image source={require('../../assets/images/MainSample1.png')} />
         </ImageWrapper>
         <TextContainer>
-          <TouchableOpacity onPress={() => navigation.navigate('Details2')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('StoryWriteSelect')}
+          >
             <TopText>Anding 읽기</TopText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => navigation.navigate('Details2')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('StoryWriteSelect')}
+          >
             <BottomText>새 Anding 쓰기</BottomText>
           </TouchableOpacity>
         </TextContainer>

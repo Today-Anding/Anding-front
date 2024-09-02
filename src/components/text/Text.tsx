@@ -48,6 +48,11 @@ const Black10px = styled.Text`
   font-size: 10px;
 `;
 
+const Pink24px = styled.Text`
+  color: #ff7070;
+  font-size: 24px;
+`;
+
 // Pink 16px
 const Pink16px = styled.Text`
   color: #ff7070;
@@ -69,6 +74,7 @@ export {
   Black14px,
   Black12px,
   Black10px,
+  Pink24px,
   Pink16px,
   Pink12px,
 };
