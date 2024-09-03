@@ -14,6 +14,7 @@ import MyPage from '../screens/mypage/Mypage';
 import AuthSelectionScreen from '../screens/user/AuthSelectionScreen';
 import Login from '../screens/user/login/Login';
 import SignUp from '../screens/user/signUp/SignUp';
+import StoryReadDetail from '../screens/reading/StoryReadDetail';
 
 // RootStackParamList 타입으로 스택 네비게이터를 생성합니다.
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -79,6 +80,7 @@ function AppNavigator() {
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="StoryReadCategory" component={StoryReadCategory} />
+        <Stack.Screen name="StoryReadDetail" component={StoryReadDetail} />
         <Stack.Screen
           name="AuthSelectionScreen"
           component={AuthSelectionScreen}

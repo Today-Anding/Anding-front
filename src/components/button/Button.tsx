@@ -15,6 +15,28 @@ type ButtonProps = {
   text: string;
 };
 
+export function Button({ navigateTo, text }: ButtonProps) {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  return (
+    <StyledButton onPress={() => navigation.navigate(navigateTo)}>
+      <ButtonText>{text}</ButtonText>
+    </StyledButton>
+  );
+}
+
+export function SmallButton({ navigateTo, text }: ButtonProps) {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  return (
+    <StyledSmallButton onPress={() => navigation.navigate(navigateTo)}>
+      <SmallButtonText>{text}</SmallButtonText>
+    </StyledSmallButton>
+  );
+}
+
+export default Button;
+
 const StyledButton = styled.TouchableOpacity`
   width: 306px;
   height: 44px;
@@ -51,25 +73,3 @@ const ButtonText = styled.Text`
 const SmallButtonText = styled.Text`
   color: #000;
 `;
-
-export function Button({ navigateTo, text }: ButtonProps) {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  return (
-    <StyledButton onPress={() => navigation.navigate(navigateTo)}>
-      <ButtonText>{text}</ButtonText>
-    </StyledButton>
-  );
-}
-
-export function SmallButton({ navigateTo, text }: ButtonProps) {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  return (
-    <StyledSmallButton onPress={() => navigation.navigate(navigateTo)}>
-      <SmallButtonText>{text}</SmallButtonText>
-    </StyledSmallButton>
-  );
-}
-
-export default Button;
