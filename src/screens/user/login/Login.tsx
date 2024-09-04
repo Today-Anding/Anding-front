@@ -45,13 +45,19 @@ function Login() {
 
   return (
     <Container>
-      <BlackLogo />
-      <GobackButton />
-      <WelcomeText>안녕하세요</WelcomeText>
-      <WelcomeText>여러분들의 창작 플랫폼,</WelcomeText>
-      <WelcomeText>
-        <HighlightText>앤딩</HighlightText>입니다.
-      </WelcomeText>
+      <LoginHead>
+        <LogoWrapper>
+          <BlackLogo />
+        </LogoWrapper>
+        <GoBackWrapper>
+          <GobackButton />
+        </GoBackWrapper>
+        <WelcomeText>안녕하세요 :)</WelcomeText>
+        <WelcomeText>여러분들의 창작 플랫폼,</WelcomeText>
+        <WelcomeText>
+          <HighlightText>앤딩</HighlightText>입니다.
+        </WelcomeText>
+      </LoginHead>
       <InputWrapper>
         <Controller
           name="username"
@@ -94,19 +100,35 @@ function Login() {
   );
 }
 
+const LoginHead = styled.View`
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px 0;
+  margin-left: 25px;
+  margin-top: 20px;
+`;
+
 const Container = styled.View`
   flex: 1;
-  align-items: center;
-  justify-content: center;
   padding: 20px;
+`;
+
+const LogoWrapper = styled.View`
+  margin-bottom: 20px;
+`;
+
+const GoBackWrapper = styled.View`
+  margin-bottom: 20px;
 `;
 
 const InputWrapper = styled.View`
   width: 100%;
+  align-items: center;
 `;
 
 const Input = styled(TextInput)`
-  height: 40px;
+  width: 336px;
+  height: 44px;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
   padding: 10px;
@@ -120,16 +142,19 @@ const Error = styled.Text`
 `;
 
 const LoginButton = styled(TouchableOpacity)`
+  width: 336px;
+  height: 44px;
   background-color: #ff5d5d;
   padding: 10px;
   border-radius: 8px;
   align-items: center;
+  justify-content: center;
 `;
 
 const ButtonText = styled.Text`
   color: #fff;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
 `;
 
 const WelcomeText = styled.Text`

@@ -7,7 +7,7 @@ interface StorySelectBoxProps {
   title: string;
 }
 
-const StorySelectBoxContainer = styled.TouchableOpacity`
+const StorySelectBoxContainer = styled.View`
   width: 324px;
   height: 90px;
   background-color: rgba(255, 255, 255, 0.6);
@@ -17,10 +17,11 @@ const StorySelectBoxContainer = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   margin-bottom: 16px;
+  padding: 10px;
 `;
 
 const StorySelectBoxStroke = styled.View`
-  width: 266.582px;
+  width: 266px;
   height: 0px;
   flex-shrink: 0;
   border-width: 1px;
@@ -29,7 +30,6 @@ const StorySelectBoxStroke = styled.View`
 `;
 
 const StorySelectBoxInnerContainer = styled.View`
-  flex: 1;
   justify-content: center;
   align-items: center;
 `;
@@ -44,14 +44,14 @@ const StorySelectBoxSubtitle = styled(Pink12px)`
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: 'rgba(255, 255, 255, 0.25)',
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffset: {
-      width: 50,
-      height: 50,
+      width: 2,
+      height: 2,
     },
-    shadowOpacity: 1,
-    shadowRadius: 200,
-    elevation: 5,
+    shadowOpacity: 0.8, // Adjusted opacity
+    shadowRadius: 5, // Adjusted radius
+    elevation: 5, // Android elevation
   },
 });
 

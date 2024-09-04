@@ -39,7 +39,7 @@ export const ReadGlassBackground = styled.View`
 
 export const ReadGlassTextBackground = styled.View`
   width: 322px;
-  height: 100%;
+  height: auto;
   flex-shrink: 0;
   padding: 36px;
   background: #fff;
@@ -49,4 +49,5 @@ export const ReadGlassTextBackground = styled.View`
   backdrop-filter: blur(15px);
   align-self: center;
   z-index: 2;
+  margin-top: 10px;
 `;

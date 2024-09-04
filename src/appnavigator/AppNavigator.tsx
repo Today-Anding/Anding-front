@@ -15,6 +15,7 @@ import AuthSelectionScreen from '../screens/user/AuthSelectionScreen';
 import Login from '../screens/user/login/Login';
 import SignUp from '../screens/user/signUp/SignUp';
 import StoryReadDetail from '../screens/reading/StoryReadDetail';
+import StoryRoomSelectScreen from '../screens/writing/StoryRoomSelectScreen';
 
 // RootStackParamList 타입으로 스택 네비게이터를 생성합니다.
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -39,6 +40,7 @@ function AppNavigator() {
     'SignUp',
     'StoryWriteCreate',
     'StoryWriteSelect',
+    'StoryRoomSelectScreen',
   ];
 
   useEffect(() => {
@@ -88,6 +90,10 @@ function AppNavigator() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
         <Stack.Screen name="StoryWriteSelect" component={StorySelectScreen} />
+        <Stack.Screen
+          name="StoryRoomSelectScreen"
+          component={StoryRoomSelectScreen}
+        />
         <Stack.Screen name="StoryWriteCreate" component={StoryCreationScreen} />
         <Stack.Screen name="Mypage" component={MyPage} />
         <Stack.Screen name="Login" component={Login} />
@@ -133,9 +139,7 @@ const CustomButton = styled.TouchableOpacity`
   flex: 1;
   padding: 10px;
   background-color: #ffffff;
-  margin: 0 5px;
-  border-radius: 15px;
-  border: #ff6565;
+  margin-left: -10px;
   align-items: center;
 `;
 

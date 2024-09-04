@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useForm, Controller } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { BlackLogo } from '../../../components/logo/Logo';
+import GobackButton from '../../../components/button/GobackButton';
+import { Black20px } from '../../../components/text/Text';
+import { Inputtext } from '../../../components/input/Input';
 
 type FormData = {
   name: string;
@@ -85,30 +89,30 @@ export default function Signup() {
       setStep(7);
     }
   };
-
   return (
     <SignupLayout>
+      <SignupHead>
+        <BlackLogo />
+        <GobackButton />
+        <Black20px>입력한 정보가 맞다면</Black20px>
+        <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+      </SignupHead>
       <SignupForm>
         {step === 1 && (
           <SignupTitle>
-            <TitleText>이름 입력</TitleText>
-            <SubtitleText>이름을 입력해주세요</SubtitleText>
             <Controller
               name="name"
               control={control}
               rules={{ required: '이름은 필수 입력 사항입니다.' }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>이름</Label>
-                  <Input
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.name && <Error>{errors.name.message}</Error>}
-                </InputWrapper>
+                <Inputtext
+                  label="이름"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.name && <Error>{errors.name.message}</Error>}
             <NextButton onPress={handleNext}>
               <ButtonText>다음</ButtonText>
             </NextButton>
@@ -116,24 +120,19 @@ export default function Signup() {
         )}
         {step === 2 && (
           <SignupTitle>
-            <TitleText>이메일 입력</TitleText>
-            <SubtitleText>이메일 주소를 입력해주세요</SubtitleText>
             <Controller
               name="email"
               control={control}
               rules={{ required: '이메일은 필수 입력 사항입니다.' }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>이메일</Label>
-                  <Input
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.email && <Error>{errors.email.message}</Error>}
-                </InputWrapper>
+                <Inputtext
+                  label="이메일"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.email && <Error>{errors.email.message}</Error>}
             <NextButton onPress={handleNext}>
               <ButtonText>다음</ButtonText>
             </NextButton>
@@ -141,8 +140,6 @@ export default function Signup() {
         )}
         {step === 3 && (
           <SignupTitle>
-            <TitleText>성별 선택</TitleText>
-            <SubtitleText>성별을 선택해주세요</SubtitleText>
             <Controller
               name="gender"
               control={control}
@@ -179,49 +176,40 @@ export default function Signup() {
         )}
         {step === 4 && (
           <SignupTitle>
-            <TitleText>닉네임 입력</TitleText>
-            <SubtitleText>닉네임을 입력해주세요</SubtitleText>
             <Controller
               name="nickname"
               control={control}
               rules={{ required: '닉네임은 필수 입력 사항입니다.' }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>닉네임</Label>
-                  <Input
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.nickname && <Error>{errors.nickname.message}</Error>}
-                </InputWrapper>
+                <Inputtext
+                  label="닉네임"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.nickname && <Error>{errors.nickname.message}</Error>}
             <NextButton onPress={handleNext}>
-              <ButtonText>다음</ButtonText>
+              <ButtonText>확인</ButtonText>
             </NextButton>
           </SignupTitle>
         )}
         {step === 5 && (
           <SignupTitle>
-            <TitleText>ID 입력</TitleText>
-            <SubtitleText>ID를 입력해주세요</SubtitleText>
             <Controller
               name="account"
               control={control}
               rules={{ required: '아이디는 필수 입력 사항입니다.' }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>아이디</Label>
-                  <Input
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.account && <Error>{errors.account.message}</Error>}
-                </InputWrapper>
+                <Inputtext
+                  label="아이디"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.account && <Error>{errors.account.message}</Error>}
+
             <NextButton onPress={handleNext}>
               <ButtonText>다음</ButtonText>
             </NextButton>
@@ -229,25 +217,19 @@ export default function Signup() {
         )}
         {step === 6 && (
           <SignupTitle>
-            <TitleText>비밀번호 입력</TitleText>
-            <SubtitleText>비밀번호를 입력하고 확인해주세요</SubtitleText>
             <Controller
               name="password"
               control={control}
               rules={{ required: '비밀번호는 필수 입력 사항입니다.' }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>비밀번호</Label>
-                  <Input
-                    secureTextEntry
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.password && <Error>{errors.password.message}</Error>}
-                </InputWrapper>
+                <Inputtext
+                  label="비밀번호"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.password && <Error>{errors.password.message}</Error>}
             <Controller
               name="confirmPassword"
               control={control}
@@ -257,20 +239,16 @@ export default function Signup() {
                   '비밀번호가 일치하지 않습니다.',
               }}
               render={({ field }) => (
-                <InputWrapper>
-                  <Label>비밀번호 확인</Label>
-                  <Input
-                    secureTextEntry
-                    {...field}
-                    value={field.value || ''}
-                    onChangeText={field.onChange}
-                  />
-                  {errors.confirmPassword && (
-                    <Error>{errors.confirmPassword.message}</Error>
-                  )}
-                </InputWrapper>
+                <Inputtext
+                  label="비밀번호 확인"
+                  value={field.value || ''}
+                  onChangeText={field.onChange}
+                />
               )}
             />
+            {errors.confirmPassword && (
+              <Error>{errors.confirmPassword.message}</Error>
+            )}
             <NextButton onPress={handleNext}>
               <ButtonText>완료</ButtonText>
             </NextButton>
@@ -299,14 +277,24 @@ export default function Signup() {
   );
 }
 
+const SignupHead = styled.View`
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px 0;
+  margin-left: 25px;
+  margin-top: 20px;
+`;
+
 const SignupLayout = styled.View`
   flex: 1;
-  align-items: center;
   padding-top: 20px;
+  background-color: white;
 `;
 
 const SignupForm = styled.View`
-  width: 80%;
+  align-items: center;
+  width: 100%;
+  margin-top: 70px;
 `;
 
 const SignupTitle = styled.View`
@@ -334,23 +322,20 @@ const Label = styled.Text`
   margin-bottom: 5px;
 `;
 
-const Input = styled(TextInput)`
-  height: 40px;
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  padding: 5px;
-`;
-
 const Error = styled.Text`
   color: red;
   font-size: 12px;
 `;
 
 const NextButton = styled(TouchableOpacity)`
+  width: 306px;
+  height: 44px;
+  flex-shrink: 0;
   background-color: #ff5d5d;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 4px;
   align-items: center;
+  margin-top: 50px;
 `;
 
 const ButtonText = styled.Text`

@@ -4,7 +4,6 @@ import Button, { SmallButton } from '../components/button/Button';
 import { Pink12px } from '../components/text/Text';
 import { BlackLogo } from '../components/logo/Logo';
 import { Inputtext } from '../components/input/Input';
-import { List } from '../components/list/List';
 
 const ComponentTest = ({ navigation }: { navigation: any }) => {
   const [text, setText] = useState('');
@@ -21,7 +20,6 @@ const ComponentTest = ({ navigation }: { navigation: any }) => {
         value={text}
         onChangeText={newText => setText(newText)}
       />
-      <List />
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image
           source={require('../assets/images/BackArrow.png')} // 경로를 올바르게 수정합니다.
