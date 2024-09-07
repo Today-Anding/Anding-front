@@ -88,6 +88,7 @@ export default React.memo(Main);
 // Styled Components
 const MainScreen = styled.View`
   flex: 1;
+  background-color: white;
 `;
 
 const MainScreenBackgroundPink = styled.View`

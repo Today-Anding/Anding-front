@@ -24,16 +24,15 @@ const StoryRoomSelectScreen: React.FC = () => {
         <WhiteLogo />
         <White16px>어떤 앤딩을 작성하고 싶으신가요?</White16px>
       </StorySelectBackground>
-      <Title>방 크기를 선택하세요</Title>
       <ButtonContainer>
         <RoomButton onPress={() => handleRoomSelect(5)}>
-          <RoomButtonText>5명 방</RoomButtonText>
+          <RoomButtonText>5인</RoomButtonText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(10)}>
-          <RoomButtonText>10명 방</RoomButtonText>
+          <RoomButtonText>10인</RoomButtonText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(15)}>
-          <RoomButtonText>15명 방</RoomButtonText>
+          <RoomButtonText>15인</RoomButtonText>
         </RoomButton>
       </ButtonContainer>
     </Container>

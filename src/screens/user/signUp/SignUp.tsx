@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useForm, Controller } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import axios from 'axios';
 import { BlackLogo } from '../../../components/logo/Logo';
 import GobackButton from '../../../components/button/GobackButton';
@@ -91,168 +91,210 @@ export default function Signup() {
   };
   return (
     <SignupLayout>
-      <SignupHead>
-        <BlackLogo />
-        <GobackButton />
-        <Black20px>입력한 정보가 맞다면</Black20px>
-        <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
-      </SignupHead>
       <SignupForm>
         {step === 1 && (
-          <SignupTitle>
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: '이름은 필수 입력 사항입니다.' }}
-              render={({ field }) => (
-                <Inputtext
-                  label="이름"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            {errors.name && <Error>{errors.name.message}</Error>}
-            <NextButton onPress={handleNext}>
-              <ButtonText>다음</ButtonText>
-            </NextButton>
-          </SignupTitle>
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: '이름은 필수 입력 사항입니다.' }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="이름"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.name && <Error>{errors.name.message}</Error>}
+              <NextButton onPress={handleNext}>
+                <ButtonText>다음</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 2 && (
-          <SignupTitle>
-            <Controller
-              name="email"
-              control={control}
-              rules={{ required: '이메일은 필수 입력 사항입니다.' }}
-              render={({ field }) => (
-                <Inputtext
-                  label="이메일"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            {errors.email && <Error>{errors.email.message}</Error>}
-            <NextButton onPress={handleNext}>
-              <ButtonText>다음</ButtonText>
-            </NextButton>
-          </SignupTitle>
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="email"
+                control={control}
+                rules={{ required: '이메일은 필수 입력 사항입니다.' }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="이메일"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.email && <Error>{errors.email.message}</Error>}
+              <NextButton onPress={handleNext}>
+                <ButtonText>다음</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 3 && (
-          <SignupTitle>
-            <Controller
-              name="gender"
-              control={control}
-              rules={{ required: '성별 선택은 필수입니다.' }}
-              render={({ field }) => (
-                <InputWrapper>
-                  <Label>성별</Label>
-                  <GenderSelect>
-                    <GenderButton
-                      onPress={() => field.onChange('male')}
-                      selected={field.value === 'male'}
-                    >
-                      <GenderText selected={field.value === 'male'}>
-                        남
-                      </GenderText>
-                    </GenderButton>
-                    <GenderButton
-                      onPress={() => field.onChange('female')}
-                      selected={field.value === 'female'}
-                    >
-                      <GenderText selected={field.value === 'female'}>
-                        여
-                      </GenderText>
-                    </GenderButton>
-                  </GenderSelect>
-                  {errors.gender && <Error>{errors.gender.message}</Error>}
-                </InputWrapper>
-              )}
-            />
-            <NextButton onPress={handleNext}>
-              <ButtonText>다음</ButtonText>
-            </NextButton>
-          </SignupTitle>
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="gender"
+                control={control}
+                rules={{ required: '성별 선택은 필수입니다.' }}
+                render={({ field }) => (
+                  <InputWrapper>
+                    <Label>성별</Label>
+                    <GenderSelect>
+                      <GenderButton
+                        onPress={() => field.onChange('male')}
+                        selected={field.value === 'male'}
+                      >
+                        <GenderText selected={field.value === 'male'}>
+                          남
+                        </GenderText>
+                      </GenderButton>
+                      <GenderButton
+                        onPress={() => field.onChange('female')}
+                        selected={field.value === 'female'}
+                      >
+                        <GenderText selected={field.value === 'female'}>
+                          여
+                        </GenderText>
+                      </GenderButton>
+                    </GenderSelect>
+                    {errors.gender && <Error>{errors.gender.message}</Error>}
+                  </InputWrapper>
+                )}
+              />
+              <NextButton onPress={handleNext}>
+                <ButtonText>다음</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 4 && (
-          <SignupTitle>
-            <Controller
-              name="nickname"
-              control={control}
-              rules={{ required: '닉네임은 필수 입력 사항입니다.' }}
-              render={({ field }) => (
-                <Inputtext
-                  label="닉네임"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            {errors.nickname && <Error>{errors.nickname.message}</Error>}
-            <NextButton onPress={handleNext}>
-              <ButtonText>확인</ButtonText>
-            </NextButton>
-          </SignupTitle>
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="nickname"
+                control={control}
+                rules={{ required: '닉네임은 필수 입력 사항입니다.' }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="닉네임"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.nickname && <Error>{errors.nickname.message}</Error>}
+              <NextButton onPress={handleNext}>
+                <ButtonText>확인</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 5 && (
-          <SignupTitle>
-            <Controller
-              name="account"
-              control={control}
-              rules={{ required: '아이디는 필수 입력 사항입니다.' }}
-              render={({ field }) => (
-                <Inputtext
-                  label="아이디"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            {errors.account && <Error>{errors.account.message}</Error>}
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="account"
+                control={control}
+                rules={{ required: '아이디는 필수 입력 사항입니다.' }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="아이디"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.account && <Error>{errors.account.message}</Error>}
 
-            <NextButton onPress={handleNext}>
-              <ButtonText>다음</ButtonText>
-            </NextButton>
-          </SignupTitle>
+              <NextButton onPress={handleNext}>
+                <ButtonText>다음</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 6 && (
-          <SignupTitle>
-            <Controller
-              name="password"
-              control={control}
-              rules={{ required: '비밀번호는 필수 입력 사항입니다.' }}
-              render={({ field }) => (
-                <Inputtext
-                  label="비밀번호"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
+          <View>
+            <SignupHead>
+              <BlackLogo />
+              <GobackButton />
+              <Black20px>입력한 정보가 맞다면</Black20px>
+              <Black20px>아래 확인 버튼을 눌러주세요.</Black20px>
+            </SignupHead>
+            <SignupTitle>
+              <Controller
+                name="password"
+                control={control}
+                rules={{ required: '비밀번호는 필수 입력 사항입니다.' }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="비밀번호"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.password && <Error>{errors.password.message}</Error>}
+              <Controller
+                name="confirmPassword"
+                control={control}
+                rules={{
+                  validate: value =>
+                    value === watch('password') ||
+                    '비밀번호가 일치하지 않습니다.',
+                }}
+                render={({ field }) => (
+                  <Inputtext
+                    label="비밀번호 확인"
+                    value={field.value || ''}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              {errors.confirmPassword && (
+                <Error>{errors.confirmPassword.message}</Error>
               )}
-            />
-            {errors.password && <Error>{errors.password.message}</Error>}
-            <Controller
-              name="confirmPassword"
-              control={control}
-              rules={{
-                validate: value =>
-                  value === watch('password') ||
-                  '비밀번호가 일치하지 않습니다.',
-              }}
-              render={({ field }) => (
-                <Inputtext
-                  label="비밀번호 확인"
-                  value={field.value || ''}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            {errors.confirmPassword && (
-              <Error>{errors.confirmPassword.message}</Error>
-            )}
-            <NextButton onPress={handleNext}>
-              <ButtonText>완료</ButtonText>
-            </NextButton>
-          </SignupTitle>
+              <NextButton onPress={handleNext}>
+                <ButtonText>완료</ButtonText>
+              </NextButton>
+            </SignupTitle>
+          </View>
         )}
         {step === 7 && (
           <SignupTitle>
@@ -292,14 +334,14 @@ const SignupLayout = styled.View`
 `;
 
 const SignupForm = styled.View`
-  align-items: center;
   width: 100%;
-  margin-top: 70px;
 `;
 
 const SignupTitle = styled.View`
+  align-items: center;
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 70px;
 `;
 
 const TitleText = styled.Text`

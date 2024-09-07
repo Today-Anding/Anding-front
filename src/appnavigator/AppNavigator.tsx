@@ -7,7 +7,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import { RootStackParamList } from '../types/types';
 import Splash from '../screens/splash/Splash';
-import { StoryReadCategory, Main, StorySelectScreen } from '../screens';
+import {
+  StoryReadCategory,
+  Main,
+  StorySelectScreen,
+  Ranking,
+} from '../screens';
 import SignUpEmail from '../screens/user/signUp/SignUpEmail';
 import StoryCreationScreen from '../screens/writing/StoryCreationScreen';
 import MyPage from '../screens/mypage/Mypage';
@@ -41,6 +46,7 @@ function AppNavigator() {
     'StoryWriteCreate',
     'StoryWriteSelect',
     'StoryRoomSelectScreen',
+    'Ranking',
   ];
 
   useEffect(() => {
@@ -97,6 +103,7 @@ function AppNavigator() {
         <Stack.Screen name="StoryWriteCreate" component={StoryCreationScreen} />
         <Stack.Screen name="Mypage" component={MyPage} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Ranking" component={Ranking} />
       </Stack.Navigator>
       {showTabBar && (
         <TabBar>
@@ -109,7 +116,7 @@ function AppNavigator() {
             <ButtonText>앤딩 읽기</ButtonText>
           </CustomButton>
           <CustomButton
-            onPress={() => navigationRef.current?.navigate('SignUpName')}
+            onPress={() => navigationRef.current?.navigate('Ranking')}
           >
             <ButtonText>랭킹</ButtonText>
           </CustomButton>

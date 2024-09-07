@@ -1,7 +1,7 @@
 export type StackParamList = {
   Landing: undefined;
   Main: undefined;
-  Details1: undefined;
+  Ranking: undefined;
   StoryReadCategory: undefined;
   ComponentTest: undefined;
   SignUpName: undefined;
@@ -29,4 +29,5 @@ export type RootStackParamList = {
   SignUp: undefined;
   StoryReadDetail: undefined;
   StoryRoomSelectScreen: undefined;
+  Ranking: undefined;
 };

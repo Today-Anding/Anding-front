@@ -51,3 +51,10 @@ export const ReadGlassTextBackground = styled.View`
   z-index: 2;
   margin-top: 10px;
 `;
+
+export const WhiteMypageBackground = styled.View`
+  width: 100%;
+  height: 611px;
+  background-color: #fff;
+  border-radius: 30px 30px 0 0;
+`;
