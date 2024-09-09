@@ -15,7 +15,7 @@ import styled from 'styled-components/native';
 
 // 네비게이션 타입 정의
 type RootStackParamList = {
-  StoryReadDetail: { title: string };
+  StoryInfoReview: { title: string };
 };
 
 // 카테고리 버튼 클릭 핸들러 함수들
@@ -45,7 +45,7 @@ function StoryReadCategory() {
 
   // 리스트 클릭 핸들러
   const handleListPress = (title: string) => {
-    navigation.navigate('StoryReadDetail', { title });
+    navigation.navigate('StoryInfoReview', { title });
   };
 
   return (
