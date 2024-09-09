@@ -2,23 +2,22 @@ import styled from 'styled-components/native';
 
 export const PinkBackground = styled.View`
   width: 100%;
-  height: 227px;
-  border-radius: 0px 0px 50px 50px;
+  height: 304px;
   background: #ff7d7d;
   align-items: center;
-  justify-content: center;
+  padding-top: 70px;
 `;
 
 export const BigGlassBackground = styled.View`
   width: 352px;
-  height: 600px;
+  height: 635px;
   padding: 36px;
   background: rgba(255, 255, 255, 0.773);
   border-width: 2px;
   border-color: rgba(255, 60, 142, 0.3);
   border-radius: 30px;
   backdrop-filter: blur(15px);
-  margin-top: -70px;
+  margin-top: -180px;
   align-self: center;
   z-index: 2;
 `;

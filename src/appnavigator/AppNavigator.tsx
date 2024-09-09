@@ -21,6 +21,8 @@ import Login from '../screens/user/login/Login';
 import SignUp from '../screens/user/signUp/SignUp';
 import StoryReadDetail from '../screens/reading/StoryReadDetail';
 import StoryRoomSelectScreen from '../screens/writing/StoryRoomSelectScreen';
+import StoryTurnScreen from '../screens/writing/StoryTurnScreen';
+import PreviousStoryScreen from '../screens/writing/PreviousStoryScreen';
 
 // RootStackParamList 타입으로 스택 네비게이터를 생성합니다.
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -47,6 +49,8 @@ function AppNavigator() {
     'StoryWriteSelect',
     'StoryRoomSelectScreen',
     'Ranking',
+    'StoryTurnScreen',
+    'PreviousStoryScreen',
   ];
 
   useEffect(() => {
@@ -104,6 +108,11 @@ function AppNavigator() {
         <Stack.Screen name="Mypage" component={MyPage} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Ranking" component={Ranking} />
+        <Stack.Screen name="StoryTurnScreen" component={StoryTurnScreen} />
+        <Stack.Screen
+          name="PreviousStoryScreen"
+          component={PreviousStoryScreen}
+        />
       </Stack.Navigator>
       {showTabBar && (
         <TabBar>

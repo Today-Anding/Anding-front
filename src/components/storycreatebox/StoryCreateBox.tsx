@@ -1,19 +1,48 @@
 import React, { FC } from 'react';
 import styled from 'styled-components/native';
-import { StyleSheet, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 
 interface StorySelectBoxProps {
-  title: string;
+  content: string;
+  onChangeContent: (text: string) => void;
 }
 
+const StorySelectBox: FC<StorySelectBoxProps> = ({
+  content,
+  onChangeContent,
+}) => {
+  const handleChange = (text: string) => {
+    if (text.length <= 5000) {
+      onChangeContent(text);
+    }
+  };
+
+  return (
+    <StorySelectBoxContainer>
+      <StoryCreateStroke />
+      <StorySelectBoxInnerContainer>
+        <StorySelectBoxTextInput
+          value={content}
+          onChangeText={handleChange}
+          placeholder="다음 앤딩을 작성해주세요"
+          multiline
+          textAlignVertical="top"
+        />
+      </StorySelectBoxInnerContainer>
+      <StoryCreateStroke />
+      <CharacterCount>{content.length} / 5000</CharacterCount>
+    </StorySelectBoxContainer>
+  );
+};
+
+export default StorySelectBox;
+
 const StorySelectBoxContainer = styled.View`
-  width: 350.137px;
-  height: 500.203px;
+  width: 348px;
+  height: 396px;
   background-color: #ffffff;
-  border-width: 2px;
-  border-color: rgba(255, 60, 142, 0.3);
-  border-radius: 13px;
-  margin-top: 200px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const StorySelectBoxInnerContainer = styled.View`
@@ -25,36 +54,23 @@ const StorySelectBoxInnerContainer = styled.View`
 const StorySelectBoxTextInput = styled(TextInput)`
   width: 100%;
   height: 100%;
-  padding: 0 16px;
-  text-align: center;
+  padding: 16px;
   font-size: 14px;
   color: #000;
+  text-align: left;
 `;
 
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: 'rgba(0, 0, 0, 0.25)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
+const StoryCreateStroke = styled.View`
+  width: 343px;
+  height: 1px;
+  background: #ff9d9d;
+`;
 
-const StorySelectBox: FC<StorySelectBoxProps> = ({ title }) => {
-  return (
-    <StorySelectBoxContainer style={styles.shadow}>
-      <StorySelectBoxInnerContainer>
-        <StorySelectBoxTextInput
-          defaultValue={title}
-          placeholder="Enter title here"
-        />
-      </StorySelectBoxInnerContainer>
-    </StorySelectBoxContainer>
-  );
-};
-
-export default StorySelectBox;
+const CharacterCount = styled.Text`
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  color: #000;
+  font-size: 12px;
+  font-family: 'Noto Sans KR';
+`;

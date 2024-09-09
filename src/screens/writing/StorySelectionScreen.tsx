@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { WhiteLogo } from '../../components/logo/Logo';
-import { White16px } from '../../components/text/Text';
+import { White12px, White16px } from '../../components/text/Text';
 import StorySelectBox from '../../components/storyselectbox/StorySelectBox';
 
 type StoryItem = {
@@ -48,13 +47,10 @@ const StorySelectScreen: React.FC = () => {
 
   return (
     <StorySelectScreenContainer>
-      <StorySelectBackground
-        colors={['#ff9999', '#ff4e4e']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-      >
+      <StorySelectBackground>
         <WhiteLogo />
         <White16px>어떤 앤딩을 작성하고 싶으신가요?</White16px>
+        <White12px>쓰고 싶은 앤딩을 골라 소설 작가에 도전해보세요</White12px>
       </StorySelectBackground>
       <ContentContainer>
         <FlatList
@@ -74,8 +70,9 @@ const StorySelectScreenContainer = styled.View`
   background-color: white;
 `;
 
-const StorySelectBackground = styled(LinearGradient)`
+const StorySelectBackground = styled.View`
   position: absolute;
+  background: #ff7d7d;
   width: 100%;
   height: 30%;
   align-items: center;

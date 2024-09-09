@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { Alert, View, StyleSheet, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // 네비게이션 훅 import
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // 네비게이션 타입 import
 import {
@@ -11,6 +11,7 @@ import { Black16px } from '../../components/text/Text';
 import { CategoryButton } from '../../components/button/CategoryButton';
 import { List } from '../../components/list/List';
 import SampleListImg from '../../assets/images/SampleListImg.png';
+import styled from 'styled-components/native';
 
 // 네비게이션 타입 정의
 type RootStackParamList = {
@@ -55,6 +56,9 @@ function StoryReadCategory() {
       <BigGlassBackground>
         <Black16px>5가지 카테고리의</Black16px>
         <Black16px>다양한 앤딩들이 있어요</Black16px>
+        <SearchContainer>
+          <SearchInput placeholder="찾고 계신 앤딩을 검색해보세요" />
+        </SearchContainer>
         <View style={styles.buttonRow}>
           <CategoryButton text="로맨스" onPress={handleRomancePress} />
           <CategoryButton text="액션" onPress={handleActionPress} />
@@ -110,8 +114,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 20,
-    gap: 40,
+    gap: 20,
   },
 });
+
+const SearchContainer = styled.View``;
+
+const SearchInput = styled(TextInput)`
+  height: 40px;
+  border-bottom-width: 0.5px;
+  border-bottom-color: #000;
+  padding: 8px;
+  color: rgba(0, 0, 0, 0.25);
+  font-family: 'Noto Sans KR';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+`;
 
 export default StoryReadCategory;

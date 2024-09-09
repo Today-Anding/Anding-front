@@ -13,6 +13,8 @@ export type StackParamList = {
   SignUp: undefined;
   StoryReadDetail: undefined;
   StoryRoomSelectScreen: undefined;
+  StoryTurnScreen: undefined;
+  PreviousStoryScreen: undefined;
 };
 export type RootStackParamList = {
   Splash: undefined;
@@ -30,4 +32,6 @@ export type RootStackParamList = {
   StoryReadDetail: undefined;
   StoryRoomSelectScreen: undefined;
   Ranking: undefined;
+  StoryTurnScreen: undefined;
+  PreviousStoryScreen: undefined;
 };
