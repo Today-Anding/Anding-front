@@ -1,6 +1,12 @@
 import styled from 'styled-components/native';
 
 // White 16px
+const White20px = styled.Text`
+  color: #ffffff;
+  font-size: 20px;
+`;
+
+// White 16px
 const White16px = styled.Text`
   color: #ffffff;
   font-size: 16px;
@@ -10,6 +16,11 @@ const White16px = styled.Text`
 const White12px = styled.Text`
   color: #ffffff;
   font-size: 12px;
+`;
+
+const White10px = styled.Text`
+  color: #ffffff;
+  font-size: 10px;
 `;
 
 // Black 24px
@@ -66,8 +77,10 @@ const Pink12px = styled.Text`
 `;
 
 export {
+  White20px,
   White16px,
   White12px,
+  White10px,
   Black24px,
   Black20px,
   Black16px,

@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { Image, TextInput } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
-import { Black16px, Black12px } from '../../components/text/Text';
+import { White10px, White12px, White20px } from '../../components/text/Text';
+import { PinkBackground } from '../../components/background/Background';
+import { ImgBox } from '../../components/imagecontainer/ImgContainer';
 import SampleListImg from '../../assets/images/SampleListImg.png';
+import ReviewComponent from '../../components/review/Review';
+import InterestImg from '../../assets/images/interestImg.png';
+import ReviewCountImg from '../../assets/images/CountReviewImg.png';
+import AndingDetailImg from '../../assets/images/AndingDetailBtn.png';
+import LikeBtnImg from '../../assets/images/LikeBtn.png';
+import SaveBtnImg from '../../assets/images/SaveBtn.png';
 
 // 네비게이션 타입 정의
 type RootStackParamList = {
@@ -17,13 +25,15 @@ type StoryInfoReviewRouteProp = RouteProp<
 >;
 
 const dummyData = {
-  genre: '로맨스',
+  genre: '판타지',
   title: '별에서 온 그대',
-  author: '작가 김하늘',
+  author: '김미희 / 유진희/ 윤비오',
   summary:
     '별에서 온 그대는 외계인과 인간의 사랑을 다룬 이야기로, 우주와 지구를 배경으로 한 아름다운 로맨스를 그립니다. 다양한 갈등과 감동적인 순간들이 어우러져 독자들에게 큰 사랑을 받고 있습니다.',
-  tags: ['로맨스', '외계인', '사랑'],
+  tags: ['재미있는', '앤딩을', '지금바로', '여기에서'],
 };
+
+const finalImageSource = SampleListImg;
 
 function StoryInfoReview() {
   const route = useRoute<StoryInfoReviewRouteProp>();
@@ -31,38 +41,86 @@ function StoryInfoReview() {
 
   return (
     <ScrollContainer>
-      <View style={styles.container}>
-        <TitleContainer>
-          <Black16px>{dummyData.title}</Black16px>
-          <Black12px>{`장르: ${dummyData.genre}`}</Black12px>
-          <Black12px>{`작가: ${dummyData.author}`}</Black12px>
-        </TitleContainer>
-        <SummaryContainer>
-          <Black12px>줄거리:</Black12px>
-          <SummaryText>{dummyData.summary}</SummaryText>
-        </SummaryContainer>
-        <TagsContainer>
-          <Black12px>태그:</Black12px>
-          <TagText>{dummyData.tags.join(', ')}</TagText>
-        </TagsContainer>
-        <ReviewContainer>
-          <Black12px>리뷰 작성:</Black12px>
-          <ReviewInput placeholder="여기에 리뷰를 작성해 주세요" multiline />
-        </ReviewContainer>
-      </View>
+      <InfoPinkBackground>
+        <ContentContainer>
+          <ImgBox
+            imageSource={finalImageSource}
+            width={105}
+            height={131}
+            borderRadius={16}
+            backgroundColor="#ffd2c3"
+          />
+          <TextContainer>
+            <TitleContainer>
+              <White12px>{`${dummyData.genre}`}</White12px>
+              <White20px>{dummyData.title}</White20px>
+              <White12px>{`글: ${dummyData.author}`}</White12px>
+            </TitleContainer>
+            <SummaryContainer>
+              <SummaryText>{dummyData.summary}</SummaryText>
+            </SummaryContainer>
+            <TagsContainer>
+              {dummyData.tags.map((tag, index) => (
+                <TagBox key={index}>
+                  <TagText>#{tag}</TagText>
+                </TagBox>
+              ))}
+            </TagsContainer>
+          </TextContainer>
+        </ContentContainer>
+        <LeftBottomContainer>
+          <InterestBox>
+            <Image source={InterestImg} />
+            <White10px>관심 500개</White10px>
+          </InterestBox>
+          <ReviewCountBox>
+            <Image source={ReviewCountImg} />
+            <White10px>리뷰수 400개</White10px>
+          </ReviewCountBox>
+        </LeftBottomContainer>
+        <RightBottomContainer>
+          <AndingDetailButton>
+            <Image source={AndingDetailImg} />
+          </AndingDetailButton>
+          <LikeButton>
+            <Image source={LikeBtnImg} />
+          </LikeButton>
+          <SaveButton>
+            <Image source={SaveBtnImg} />
+          </SaveButton>
+        </RightBottomContainer>
+      </InfoPinkBackground>
+      <Container>
+        <ReviewComponent />
+      </Container>
     </ScrollContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-});
-
-const ScrollContainer = styled(ScrollView)`
+const InfoPinkBackground = styled.View`
+  width: 100%;
+  height: 304px;
+  background: #ff7d7d;
+  padding-top: 20px;
+`;
+const ScrollContainer = styled.ScrollView`
   flex: 1;
   background-color: white;
+`;
+
+const Container = styled.View`
+  padding: 16px;
+`;
+
+const ContentContainer = styled.View`
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 16px;
+`;
+
+const TextContainer = styled.View`
+  flex: 1;
+  padding-left: 16px;
 `;
 
 const TitleContainer = styled.View`
@@ -74,26 +132,72 @@ const SummaryContainer = styled.View`
 `;
 
 const SummaryText = styled.Text`
-  font-size: 12px;
-  line-height: 18px;
+  color: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
 const TagsContainer = styled.View`
-  margin-bottom: 16px;
+  flex-direction: row;
+  gap: 3px;
+`;
+
+const TagBox = styled.View`
+  width: 52px;
+  height: 18px;
+  border-radius: 5px;
+  background: #ff6565;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TagText = styled.Text`
-  font-size: 12px;
+  color: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 500;
 `;
 
-const ReviewContainer = styled.View``;
+const LeftBottomContainer = styled.View`
+  position: absolute;
+  bottom: 10px;
+  padding-left: 17px;
+  flex-direction: row;
+  gap: 24px;
+`;
+const InterestBox = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
 
-const ReviewInput = styled(TextInput)`
-  height: 100px;
-  border-width: 1px;
-  border-color: #ccc;
-  padding: 8px;
-  font-size: 12px;
+const ReviewCountBox = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const RightBottomContainer = styled.View`
+  gap: 11px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const AndingDetailButton = styled.View`
+  position: absolute;
+  bottom: -75px;
+  right: 128px;
+`;
+const LikeButton = styled.View`
+  position: absolute;
+  bottom: -75px;
+  right: 72px;
+`;
+const SaveButton = styled.View`
+  position: absolute;
+  bottom: -75px;
+  right: 16px;
 `;
 
 export default StoryInfoReview;
