@@ -52,6 +52,7 @@ const ModalContainer = styled.View`
   bottom: 0;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 `;
 
 const Overlay = styled.View`
@@ -61,6 +62,7 @@ const Overlay = styled.View`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 `;
 
 const ModalContent = styled.View`

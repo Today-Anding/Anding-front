@@ -1,5 +1,5 @@
-import React from 'react';
-import { Alert, View, StyleSheet, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, View, StyleSheet, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // 네비게이션 훅 import
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // 네비게이션 타입 import
 import {
@@ -11,6 +11,7 @@ import { Black16px } from '../../components/text/Text';
 import { CategoryButton } from '../../components/button/CategoryButton';
 import { List } from '../../components/list/List';
 import SampleListImg from '../../assets/images/SampleListImg.png';
+import Modal from '../../components/modal/Modal'; // 모달 import
 import styled from 'styled-components/native';
 
 // 네비게이션 타입 정의
@@ -43,9 +44,22 @@ function StoryReadCategory() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>(); // 네비게이션 훅 사용
 
+  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 가시성 상태
+  const [selectedTitle, setSelectedTitle] = useState(''); // 선택된 제목
+
   // 리스트 클릭 핸들러
   const handleListPress = (title: string) => {
-    navigation.navigate('StoryInfoReview', { title });
+    setSelectedTitle(title);
+    setIsModalVisible(true);
+  };
+
+  const handleConfirm = () => {
+    setIsModalVisible(false);
+    navigation.navigate('StoryInfoReview', { title: selectedTitle });
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   return (
@@ -58,7 +72,12 @@ function StoryReadCategory() {
         <Black16px>다양한 앤딩들이 있어요</Black16px>
         <SearchContainer>
           <SearchInput placeholder="찾고 계신 앤딩을 검색해보세요" />
+          <Image
+            source={require('../../assets/images/searchImg.png')}
+            style={{ width: 14, height: 14 }}
+          />
         </SearchContainer>
+
         <View style={styles.buttonRow}>
           <CategoryButton text="로맨스" onPress={handleRomancePress} />
           <CategoryButton text="액션" onPress={handleActionPress} />
@@ -101,6 +120,15 @@ function StoryReadCategory() {
           />
         </View>
       </BigGlassBackground>
+
+      {isModalVisible && (
+        <Modal
+          title="앤딩 읽기"
+          message="앤딩 읽기를 시작할까요?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
     </View>
   );
 }
@@ -118,13 +146,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const SearchContainer = styled.View``;
-
-const SearchInput = styled(TextInput)`
+const SearchContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   height: 40px;
   border-bottom-width: 0.5px;
   border-bottom-color: #000;
-  padding: 8px;
+`;
+
+const SearchInput = styled(TextInput)`
+  flex: 1;
   color: rgba(0, 0, 0, 0.25);
   font-family: 'Noto Sans KR';
   font-size: 10px;

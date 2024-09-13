@@ -12,7 +12,7 @@ interface CarouselProps {
   items: CarouselItem[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({ items }) => {
+const MainCarousel: React.FC<CarouselProps> = ({ items }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -57,7 +57,7 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
   );
 };
 
-export default Carousel;
+export default MainCarousel;
 
 const CarouselContainer = styled.View`
   width: ${screenWidth}px;

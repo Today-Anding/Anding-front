@@ -53,6 +53,7 @@ function AppNavigator() {
     'StoryTurnScreen',
     'PreviousStoryScreen',
     'StoryInfoReview',
+    'StoryReadDetail',
   ];
 
   useEffect(() => {
@@ -152,6 +153,7 @@ const TabBar = styled.View`
   left: 0;
   right: 0;
   padding: 10px 0;
+  border: 1px solid rgba(255, 137, 137, 0.25);
 `;
 
 const CustomButton = styled.TouchableOpacity`
