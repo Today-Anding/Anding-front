@@ -7,11 +7,12 @@ import { BlackLogo } from '../../../components/logo/Logo';
 import GobackButton from '../../../components/button/GobackButton';
 import { Black20px } from '../../../components/text/Text';
 import { Inputtext } from '../../../components/input/Input';
+import Config from 'react-native-config';
 
 type FormData = {
   name: string;
-  email: string;
-  gender: 'male' | 'female';
+  phone: string;
+  gender: 'man' | 'woman';
   nickname: string;
   account: string;
   password: string;
@@ -27,8 +28,8 @@ export default function Signup() {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      email: '',
-      gender: 'male',
+      phone: '',
+      gender: 'man',
       nickname: '',
       account: '',
       password: '',
@@ -45,7 +46,7 @@ export default function Signup() {
         setStep(2);
       }
     } else if (step === 2) {
-      const result = await trigger(['email']);
+      const result = await trigger(['phone']);
       if (result) {
         setStep(3);
       }
@@ -69,26 +70,40 @@ export default function Signup() {
       if (result && watch('password') === watch('confirmPassword')) {
         await onSubmit(watch());
       } else if (watch('password') !== watch('confirmPassword')) {
+        // 비밀번호 불일치 처리
       }
     }
   };
 
+  const apiUrl = Config.API_URL;
+
   const onSubmit = async (data: FormData) => {
     try {
-      // 실제 API 호출
-      const response = await axios.post('/sign-api/sign-up?roles=ADMIN', data, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${apiUrl}/sign-api/sign-up?roles=user`,
+        {
+          account: data.account,
+          gender: data.gender,
+          name: data.name,
+          nickname: data.nickname,
+          password: data.password,
+          phone: data.phone,
         },
-      });
+        {
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       console.log(response.data);
       setStep(7);
     } catch (error) {
-      // API 호출 실패 시에도 화면을 넘기도록 수정
       console.error('회원가입 에러', error);
       setStep(7);
     }
   };
+
   return (
     <SignupLayout>
       <SignupForm>
@@ -130,18 +145,18 @@ export default function Signup() {
             </SignupHead>
             <SignupTitle>
               <Controller
-                name="email"
+                name="phone"
                 control={control}
-                rules={{ required: '이메일은 필수 입력 사항입니다.' }}
+                rules={{ required: '번호는 필수 입력 사항입니다.' }}
                 render={({ field }) => (
                   <Inputtext
-                    label="이메일"
+                    label="번호"
                     value={field.value || ''}
                     onChangeText={field.onChange}
                   />
                 )}
               />
-              {errors.email && <Error>{errors.email.message}</Error>}
+              {errors.phone && <Error>{errors.phone.message}</Error>}
               <NextButton onPress={handleNext}>
                 <ButtonText>다음</ButtonText>
               </NextButton>
@@ -166,18 +181,18 @@ export default function Signup() {
                     <Label>성별</Label>
                     <GenderSelect>
                       <GenderButton
-                        onPress={() => field.onChange('male')}
-                        selected={field.value === 'male'}
+                        onPress={() => field.onChange('man')}
+                        selected={field.value === 'man'}
                       >
-                        <GenderText selected={field.value === 'male'}>
+                        <GenderText selected={field.value === 'man'}>
                           남
                         </GenderText>
                       </GenderButton>
                       <GenderButton
-                        onPress={() => field.onChange('female')}
-                        selected={field.value === 'female'}
+                        onPress={() => field.onChange('woman')}
+                        selected={field.value === 'woman'}
                       >
-                        <GenderText selected={field.value === 'female'}>
+                        <GenderText selected={field.value === 'woman'}>
                           여
                         </GenderText>
                       </GenderButton>
@@ -242,7 +257,6 @@ export default function Signup() {
                 )}
               />
               {errors.account && <Error>{errors.account.message}</Error>}
-
               <NextButton onPress={handleNext}>
                 <ButtonText>다음</ButtonText>
               </NextButton>
@@ -267,6 +281,7 @@ export default function Signup() {
                     label="비밀번호"
                     value={field.value || ''}
                     onChangeText={field.onChange}
+                    secureTextEntry
                   />
                 )}
               />
@@ -284,6 +299,7 @@ export default function Signup() {
                     label="비밀번호 확인"
                     value={field.value || ''}
                     onChangeText={field.onChange}
+                    secureTextEntry
                   />
                 )}
               />
@@ -305,11 +321,7 @@ export default function Signup() {
             <SubtitleText>
               <HighlightText>{watch('name')}</HighlightText>님
             </SubtitleText>
-            <LinktoLogin
-              onPress={() => {
-                /* 로그인으로 이동하는 로직 */
-              }}
-            >
+            <LinktoLogin onPress={() => {}}>
               <ButtonText>로그인 하러가기</ButtonText>
             </LinktoLogin>
           </SignupTitle>
