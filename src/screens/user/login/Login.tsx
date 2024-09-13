@@ -5,9 +5,10 @@ import { TextInput, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import { BlackLogo } from '../../../components/logo/Logo';
 import GobackButton from '../../../components/button/GobackButton';
+import Config from 'react-native-config';
 
 type FormData = {
-  username: string;
+  account: string;
   password: string;
 };
 
@@ -18,26 +19,28 @@ function Login() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      username: '',
+      account: '',
       password: '',
     },
   });
 
+  const apiUrl = Config.API_URL;
+
   const onSubmit = async (data: FormData) => {
     try {
-      // Replace with your actual login API endpoint
-      const response = await axios.post('/api/login', data, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${apiUrl}/sign-api/sign-in?account=${data.account}&password=${data.password}`,
+        null,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
-      // Handle successful login
       console.log(response.data);
       Alert.alert('로그인 성공', '환영합니다!');
-      // Redirect to the next screen or perform any other actions
     } catch (error) {
-      // Handle login error
       console.error('로그인 에러', error);
       Alert.alert('로그인 실패', '아이디 또는 비밀번호가 올바르지 않습니다.');
     }
@@ -60,7 +63,7 @@ function Login() {
       </LoginHead>
       <InputWrapper>
         <Controller
-          name="username"
+          name="account"
           control={control}
           rules={{ required: '아이디는 필수 입력 사항입니다.' }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -73,7 +76,7 @@ function Login() {
             />
           )}
         />
-        {errors.username && <Error>{errors.username.message}</Error>}
+        {errors.account && <Error>{errors.account.message}</Error>}
 
         <Controller
           name="password"
