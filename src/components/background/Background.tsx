@@ -19,7 +19,6 @@ export const BigGlassBackground = styled.View`
   backdrop-filter: blur(15px);
   margin-top: -180px;
   align-self: center;
-  z-index: 2;
 `;
 
 export const ReadGlassBackground = styled.View`
@@ -52,6 +51,9 @@ export const ReadGlassTextBackground = styled.View`
 `;
 
 export const WhiteMypageBackground = styled.View`
+  flex: 1;
+  position: absolute;
+  top: 250px;
   width: 100%;
   height: 611px;
   background-color: #fff;

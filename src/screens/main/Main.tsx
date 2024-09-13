@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import { WhiteLogo } from '../../components/logo/Logo';
-import Carousel from '../../components/carousel/Carousel';
+import MainCarousel from '../../components/carousel/Carousel';
 import {
   Black14px,
-  Black16px,
+  Black17px,
+  Black17pxBold,
   Pink12px,
   White12px,
   White16px,
+  White16pxBold,
 } from '../../components/text/Text';
 import { Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SideNav from '../../components/sidenav/SideNav';
 
 const Main: React.FC = () => {
@@ -23,6 +25,12 @@ const Main: React.FC = () => {
     { imageSource: require('../../assets/images/Carousel2.png') },
     { imageSource: require('../../assets/images/Carousel3.png') },
   ];
+  useFocusEffect(
+    useCallback(() => {
+      // Close the sidebar when the screen is focused
+      setSidebarVisible(false);
+    }, []),
+  );
 
   return (
     <MainScreen>
@@ -39,9 +47,13 @@ const Main: React.FC = () => {
             />
           </HamburgerButton>
         </HeaderBox>
-        <Carousel items={carouselItems} />
-        <White16px>오늘은 어떤 스토리를 작성할까요?</White16px>
-        <White12px>이어 쓸 스토리를 선택해주세요!</White12px>
+        <MainCarousel items={carouselItems} />
+        <MainText>
+          <White16px>
+            오늘은 어떤 <White16pxBold>스토리</White16pxBold>를 작성할까요?
+          </White16px>
+          <White12px>이어 쓸 스토리를 선택해주세요!</White12px>
+        </MainText>
       </MainScreenBackgroundPink>
       <BoxContainer>
         <ImageWrapper>
@@ -49,7 +61,7 @@ const Main: React.FC = () => {
         </ImageWrapper>
         <TextContainer>
           <TouchableOpacity
-            onPress={() => navigation.navigate('StoryWriteSelect')}
+            onPress={() => navigation.navigate('StoryReadCategory')}
           >
             <TopText>Anding 읽기</TopText>
           </TouchableOpacity>
@@ -63,7 +75,9 @@ const Main: React.FC = () => {
       </BoxContainer>
       <MainScreenBackgroundWhite>
         <HeaderContainer>
-          <Black16px>나의 Anding</Black16px>
+          <Black17px>
+            나의 <Black17pxBold>Anding</Black17pxBold>
+          </Black17px>
         </HeaderContainer>
         <GridContainer>
           {[...Array(4)].map((_, index) => (
@@ -85,7 +99,6 @@ const Main: React.FC = () => {
 
 export default React.memo(Main);
 
-// Styled Components
 const MainScreen = styled.View`
   flex: 1;
   background-color: white;
@@ -96,6 +109,10 @@ const MainScreenBackgroundPink = styled.View`
   background: #ff7d7d;
   align-items: center;
   z-index: 1;
+`;
+const MainText = styled.View`
+  gap: 10px;
+  align-items: center;
 `;
 
 const HeaderBox = styled.View`
@@ -118,7 +135,7 @@ const BoxContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.756);
+  background: rgba(255, 255, 255, 0.867);
   border-width: 2px;
   border-color: rgba(255, 60, 142, 0.3);
   border-radius: 30px;
@@ -190,8 +207,8 @@ const SmallDivider = styled.View`
   width: 130px;
   height: 1px;
   background-color: #fcc;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const MainMyAnding = styled.TouchableOpacity`
@@ -206,4 +223,14 @@ const MainMyAnding = styled.TouchableOpacity`
   box-shadow: 3px 4px 10.9px rgba(255, 141, 141, 0.25);
   backdrop-filter: blur(15px);
   background-color: rgb(255, 255, 255);
+
+  /* 그림자 효과 추가 */
+  shadow-color: #ff9797;
+  shadow-offset: {
+    width: 4px;
+    height: 4px;
+  }
+  shadow-opacity: 0.35;
+  shadow-radius: 3.84px;
+  elevation: 5;
 `;

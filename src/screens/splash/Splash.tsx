@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   splashStartText: {
     color: '#FFFFFF',
-    fontFamily: 'Noto Sans',
+    fontFamily: 'NotoSansKR-Regular',
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 20,

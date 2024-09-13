@@ -41,7 +41,11 @@ export function ImgBox({
       borderRadius={borderRadius}
       backgroundColor={backgroundColor}
     >
-      <Image source={imageSource} style={{ width, height, borderRadius }} />
+      <Image
+        source={imageSource}
+        style={{ width, height, borderRadius }}
+        resizeMode="cover"
+      />
     </ImgBoxContainer>
   );
 }
