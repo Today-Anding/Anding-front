@@ -4,9 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 import { SideWhiteLogoText } from '../logo/Logo';
 import { Image, TouchableWithoutFeedback } from 'react-native';
 
-const SideNav: React.FC<{ visible: boolean; onClose: () => void }> = ({
+interface SideNavProps {
+  visible: boolean;
+  onClose: () => void;
+  isLoggedIn: boolean;
+  onLogout: () => void;
+}
+
+const SideNav: React.FC<SideNavProps> = ({
   visible,
   onClose,
+  isLoggedIn,
+  onLogout,
 }) => {
   const navigation = useNavigation();
 
@@ -38,9 +47,15 @@ const SideNav: React.FC<{ visible: boolean; onClose: () => void }> = ({
           <Image source={require('../../assets/images/sideNav4.png')} />
           <ButtonText>설정</ButtonText>
         </Button>
-        <Button onPress={() => navigation.navigate('AuthSelectionScreen')}>
-          <BottomText>로그인/회원가입</BottomText>
-        </Button>
+        {isLoggedIn ? (
+          <Button onPress={onLogout}>
+            <BottomText>로그아웃</BottomText>
+          </Button>
+        ) : (
+          <Button onPress={() => navigation.navigate('AuthSelectionScreen')}>
+            <BottomText>로그인/회원가입</BottomText>
+          </Button>
+        )}
       </SidebarContainer>
     </>
   );

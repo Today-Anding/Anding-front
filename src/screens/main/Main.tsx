@@ -14,10 +14,26 @@ import {
 import { Image, TouchableOpacity } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SideNav from '../../components/sidenav/SideNav';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { logout } from '../../store/authSlice';
 
 const Main: React.FC = () => {
   const navigation = useNavigation();
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setSidebarVisible(false);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      setSidebarVisible(false);
+    }, []),
+  );
 
   // Carousel items
   const carouselItems = [
@@ -92,6 +108,8 @@ const Main: React.FC = () => {
       <SideNav
         visible={sidebarVisible}
         onClose={() => setSidebarVisible(false)}
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
       />
     </MainScreen>
   );

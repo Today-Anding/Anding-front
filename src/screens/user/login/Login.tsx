@@ -6,6 +6,9 @@ import axios from 'axios';
 import { BlackLogo } from '../../../components/logo/Logo';
 import GobackButton from '../../../components/button/GobackButton';
 import Config from 'react-native-config';
+import { login } from '../../../store/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 type FormData = {
   account: string;
@@ -25,12 +28,13 @@ function Login() {
   });
 
   const apiUrl = Config.API_URL;
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
         `${apiUrl}/sign-api/sign-in?account=${data.account}&password=${data.password}`,
-        null,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -40,6 +44,10 @@ function Login() {
 
       console.log(response.data);
       Alert.alert('로그인 성공', '환영합니다!');
+
+      // 로그인 상태를 저장하고 네비게이션 수행
+      dispatch(login({ account: data.account }));
+      navigation.navigate('Main'); // 네비게이션을 수행합니다.
     } catch (error) {
       console.error('로그인 에러', error);
       Alert.alert('로그인 실패', '아이디 또는 비밀번호가 올바르지 않습니다.');
