@@ -13,7 +13,7 @@ function Splash() {
       duration: 500,
       useNativeDriver: true,
     }).start(() => {
-      navigation.navigate('Main');
+      navigation.navigate('Login');
     });
   };
 
