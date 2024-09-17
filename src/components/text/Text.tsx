@@ -89,6 +89,12 @@ const Black12pxLight = styled.Text`
   font-style: normal;
   font-weight: 100;
 `;
+const Black10pxMid = styled.Text`
+  color: #000000;
+  font-size: 10px;
+  font-family: 'NotoSansKR';
+  font-weight: 500;
+`;
 
 const Black10px = styled.Text`
   color: #000000;
@@ -123,6 +129,13 @@ const Pink12px = styled.Text`
   font-family: 'NotoSansKR';
 `;
 
+const Pink5px = styled.Text`
+  color: #ff7070;
+  font-family: 'Noto Sans';
+  font-size: 5px;
+  font-style: normal;
+  font-weight: 300;
+`;
 const Gray10px = styled.Text`
   color: #b7b7b7;
   font-family: 'Noto Sans KR';
@@ -146,10 +159,12 @@ export {
   Black14px,
   Black12px,
   Black12pxLight,
+  Black10pxMid,
   Black10px,
   Pink24px,
   Pink16px,
   Pink12pxBold,
   Pink12px,
+  Pink5px,
   Gray10px,
 };
