@@ -43,11 +43,9 @@ function Login() {
       );
 
       console.log(response.data);
-      Alert.alert('로그인 성공', '환영합니다!');
 
-      // 로그인 상태를 저장하고 네비게이션 수행
       dispatch(login({ account: data.account }));
-      navigation.navigate('Main'); // 네비게이션을 수행합니다.
+      navigation.navigate('Main');
     } catch (error) {
       console.error('로그인 에러', error);
       Alert.alert('로그인 실패', '아이디 또는 비밀번호가 올바르지 않습니다.');
