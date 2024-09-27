@@ -1,40 +1,126 @@
-import React, { useRef, useEffect } from 'react';
-import { Animated, Image } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Image, Alert } from 'react-native';
 import styled from 'styled-components/native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  RouteProp,
+  useRoute,
+} from '@react-navigation/native';
 import { WhiteLogo } from '../../components/logo/Logo';
 import { Black10px, Black12px, White16px } from '../../components/text/Text';
+import axios from 'axios';
+import Config from 'react-native-config';
 
 type RootStackParamList = {
-  PreviousStoryScreen: { storyId: string }; // 네비게이션에 필요한 파라미터
+  PreviousStoryScreen: {
+    content: string | null;
+    storyId: string;
+    position: number;
+  };
+  StoryTurnScreen: { roomSize: number; storyId: string };
+  StoryWriteCreate: {
+    roomSize: number;
+    storyId: string;
+  };
 };
+
+interface Story {
+  content: string;
+  author: string;
+  message: string | null;
+  story_id: number;
+}
+
+type StoryTurnScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'StoryTurnScreen'
+>;
 
 function StoryTurnScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  // 애니메이션 값 초기화
+  const route = useRoute<StoryTurnScreenRouteProp>();
+  const { roomSize, storyId } = route.params;
+  const [stories, setStories] = useState<Story[]>([]);
   const slideAnim = useRef(new Animated.Value(100)).current;
 
   useEffect(() => {
-    // 애니메이션 실행
     Animated.timing(slideAnim, {
       toValue: 0,
-      duration: 1000, // 애니메이션 시간 (1000ms = 1초)
+      duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, [slideAnim]);
 
-  const handleTurnButtonPress = (storyId: string) => {
-    // 'StoryDetail' 화면으로 이동
-    navigation.navigate('PreviousStoryScreen', { storyId });
+    const apiUrl = Config.API_URL;
+    const getStoryEndpoint = `${apiUrl}/api/v1/story${roomSize}/incomplete/${storyId}`;
+
+    const fetchStories = async () => {
+      try {
+        const response = await axios.get(getStoryEndpoint);
+        const validStories = Array.isArray(response.data.items)
+          ? response.data.items
+          : [];
+        setStories(validStories);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Axios error:', error.message);
+          if (error.response) {
+            console.error(
+              'Response error:',
+              error.response.status,
+              error.response.data,
+            );
+          }
+        } else {
+          console.error('Unknown error:', error);
+        }
+        Alert.alert('오류', '이야기를 불러오는 데 실패했습니다.');
+      }
+    };
+
+    fetchStories();
+  }, [slideAnim, roomSize, storyId]);
+
+  const fetchStoryContent = async (storyId: string, position: number) => {
+    try {
+      const apiUrl = Config.API_URL;
+      const response = await axios.get(
+        `${apiUrl}/api/v1/story${roomSize}/getStory${roomSize}/${storyId}/${position}`,
+      );
+      console.log('API Response:', response.data);
+      return response.data.content;
+    } catch (error) {
+      console.error('Error fetching story content:', error);
+      return null;
+    }
+  };
+
+  const navigateToPreviousStoryScreen = (
+    content: string | null,
+    storyId: string,
+    position: number,
+  ) => {
+    if (content !== null) {
+      navigation.navigate('PreviousStoryScreen', {
+        content,
+        storyId,
+        position,
+      });
+    }
+  };
+
+  const handleTurnButtonPress = async (storyId: string, position: number) => {
+    const content = await fetchStoryContent(storyId, position);
+    navigateToPreviousStoryScreen(content, storyId, position);
   };
 
   const handleAddStory = () => {
-    // 'StoryWriteCreate' 화면으로 이동
-    navigation.navigate('StoryWriteCreate');
+    navigation.navigate('StoryWriteCreate', {
+      roomSize: roomSize,
+      storyId: storyId,
+    });
   };
 
-  // 애니메이션 스타일 생성
   const animatedStyle = {
     transform: [{ translateY: slideAnim }],
   };
@@ -48,26 +134,27 @@ function StoryTurnScreen() {
           <Image source={require('../../assets/images/StoryTurnImg.png')} />
           <TextContainer>
             <Black12px>앞의 앤딩들을 읽어보고,</Black12px>
-            <Black12px> 이어지는 이야기를 새롭게 만들어보세요!</Black12px>
+            <Black12px>이어지는 이야기를 새롭게 만들어보세요!</Black12px>
           </TextContainer>
         </StorySelectWhiteBox>
       </StorySelectBackground>
       <TurnBox>
-        <TurnButton onPress={() => handleTurnButtonPress('1번째 이야기')}>
-          <Black12px>첫번째 앤딩</Black12px>
-          <TurnButtonStroke />
-          <Black10px>시놉시스</Black10px>
-        </TurnButton>
-        <TurnButton onPress={() => handleTurnButtonPress('2번째 이야기')}>
-          <Black12px>두번째 앤딩</Black12px>
-          <TurnButtonStroke />
-          <Black10px>작가 : 김미희</Black10px>
-        </TurnButton>
-        <TurnButton onPress={() => handleTurnButtonPress('3번째 이야기')}>
-          <Black12px>세번째 앤딩</Black12px>
-          <TurnButtonStroke />
-          <Black10px>작가 : 유경빈</Black10px>
-        </TurnButton>
+        {stories.length > 0 ? (
+          stories.map((story, index) => (
+            <TurnButton
+              key={story.story_id}
+              onPress={() => handleTurnButtonPress(storyId, index + 1)}
+            >
+              <Black12px>{`${index + 1}번째 앤딩`}</Black12px>
+              <TurnButtonStroke />
+              <Black10px>
+                {index === 0 ? '시놉시스' : `작가: ${story.author}`}
+              </Black10px>
+            </TurnButton>
+          ))
+        ) : (
+          <Black10px>이야기가 없습니다.</Black10px>
+        )}
       </TurnBox>
       <AddStoryContainer style={animatedStyle}>
         <AddStoryText>
@@ -94,14 +181,15 @@ const Container = styled.View`
 
 const StorySelectBackground = styled.View`
   width: 100%;
-  height: 40%;
+  height: 35%;
   background: #ff7d7d;
   align-items: center;
   justify-content: center;
   gap: 16px;
+  padding-top: 30px;
 `;
 
-export const StorySelectWhiteBox = styled.View`
+const StorySelectWhiteBox = styled.View`
   width: 354px;
   min-height: 79px;
   border-radius: 15px;
@@ -109,6 +197,7 @@ export const StorySelectWhiteBox = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 14px;
+  margin-top: 10px;
 `;
 
 const TextContainer = styled.View`

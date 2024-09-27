@@ -4,25 +4,104 @@ import { WhiteLogo } from '../../components/logo/Logo';
 import { White12px, White16px } from '../../components/text/Text';
 import StoryCreateBox from '../../components/storycreatebox/StoryCreateBox';
 import Modal from '../../components/modal/Modal';
+import axios from 'axios';
+import Config from 'react-native-config';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+
+type RootStackParamList = {
+  StoryWriteCreate: {
+    roomSize: number;
+    storyId: string;
+  };
+};
 
 const StoryCreationScreen: React.FC = () => {
+  const route = useRoute<RouteProp<RootStackParamList, 'StoryWriteCreate'>>();
+  const { roomSize, storyId } = route.params;
   const [content, setContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showProcessingModal, setShowProcessingModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const handleCompleteWriting = () => {
     setShowModal(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setShowModal(false);
     setShowProcessingModal(true);
 
-    setTimeout(() => {
+    const apiUrl = Config.API_URL;
+    let endpoint = '';
+    let requestData = {};
+
+    switch (roomSize) {
+      case 5:
+        endpoint = `${apiUrl}/api/v1/story5/createStory5`;
+        requestData = {
+          content: content,
+          fiveId: storyId,
+        };
+        break;
+      case 10:
+        endpoint = `${apiUrl}/api/v1/story10/createStory10`;
+        requestData = {
+          content: content,
+          tenId: storyId,
+        };
+        break;
+      case 15:
+        endpoint = `${apiUrl}/api/v1/story15/createStory15`;
+        requestData = {
+          content: content,
+          fifteenId: storyId,
+        };
+        break;
+      default:
+        setShowErrorModal(true);
+        return;
+    }
+
+    if (!token) {
+      console.error('No token found');
+      setShowErrorModal(true);
+      return;
+    }
+
+    try {
+      console.log('Endpoint:', endpoint);
+      console.log('Request Data:', requestData);
+
+      const response = await axios.post(endpoint, requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+          accept: '*/*',
+          'X-AUTH-TOKEN': token,
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('Story created successfully');
+        setShowSuccessModal(true);
+      } else {
+        console.error('Unexpected response:', response.status);
+        setShowErrorModal(true);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.response?.data || error.message);
+      } else {
+        console.error('Unknown error:', error);
+      }
+      setShowErrorModal(true);
+    } finally {
       setShowProcessingModal(false);
-      setShowSuccessModal(true);
-    }, 3000);
+    }
   };
 
   const handleCancel = () => {
@@ -32,6 +111,10 @@ const StoryCreationScreen: React.FC = () => {
 
   const handleSuccessConfirm = () => {
     setShowSuccessModal(false);
+  };
+
+  const handleErrorConfirm = () => {
+    setShowErrorModal(false);
   };
 
   return (
@@ -82,6 +165,16 @@ const StoryCreationScreen: React.FC = () => {
           cancelText=""
         />
       )}
+      {showErrorModal && (
+        <Modal
+          title="등록 실패"
+          message="글 등록 중 문제가 발생했습니다. 다시 시도해 주세요."
+          onConfirm={handleErrorConfirm}
+          onCancel={() => {}}
+          confirmText="확인"
+          cancelText=""
+        />
+      )}
     </StorySelectScreenContainer>
   );
 };
@@ -105,6 +198,7 @@ const StorySelectBackground = styled.View`
 `;
 
 const WritingBox = styled.ScrollView``;
+
 const TurnTitle = styled.View`
   align-self: flex-start;
   padding-left: 10px;
@@ -127,6 +221,7 @@ const StoryTurnNum = styled.Text`
   font-style: normal;
   font-weight: 300;
 `;
+
 const CompletedWrite = styled.TouchableOpacity`
   width: 88px;
   height: 29px;
@@ -135,8 +230,9 @@ const CompletedWrite = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   align-self: center;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
+
 const ButtonText = styled.Text`
   color: #000;
   text-align: center;

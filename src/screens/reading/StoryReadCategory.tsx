@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, View, StyleSheet, TextInput, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // 네비게이션 훅 import
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // 네비게이션 타입 import
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   BigGlassBackground,
   PinkBackground,
@@ -11,41 +11,31 @@ import { Black16px } from '../../components/text/Text';
 import { CategoryButton } from '../../components/button/CategoryButton';
 import { List } from '../../components/list/List';
 import SampleListImg from '../../assets/images/SampleListImg.png';
-import Modal from '../../components/modal/Modal'; // 모달 import
+import Modal from '../../components/modal/Modal';
 import styled from 'styled-components/native';
 
-// 네비게이션 타입 정의
 type RootStackParamList = {
   StoryInfoReview: { title: string };
 };
 
-// 카테고리 버튼 클릭 핸들러 함수들
-const handleRomancePress = () => {
-  Alert.alert('로맨스 카테고리 선택됨', '로맨스 카테고리를 선택하셨습니다.');
+const handleShortPress = () => {
+  Alert.alert('단편 카테고리 선택됨', '단편 카테고리를 선택하셨습니다.');
 };
 
-const handleActionPress = () => {
-  Alert.alert('액션 카테고리 선택됨', '액션 카테고리를 선택하셨습니다.');
+const handleMiddlePress = () => {
+  Alert.alert('중편 카테고리 선택됨', '중편 카테고리를 선택하셨습니다.');
 };
 
-const handleMysteryPress = () => {
-  Alert.alert('추리 카테고리 선택됨', '추리 카테고리를 선택하셨습니다.');
-};
-
-const handleComedyPress = () => {
-  Alert.alert('코믹 카테고리 선택됨', '코믹 카테고리를 선택하셨습니다.');
-};
-
-const handleFantasyPress = () => {
-  Alert.alert('판타지 카테고리 선택됨', '판타지 카테고리를 선택하셨습니다.');
+const handleLongPress = () => {
+  Alert.alert('장편 카테고리 선택됨', '장편 카테고리를 선택하셨습니다.');
 };
 
 function StoryReadCategory() {
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>(); // 네비게이션 훅 사용
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 가시성 상태
-  const [selectedTitle, setSelectedTitle] = useState(''); // 선택된 제목
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTitle, setSelectedTitle] = useState('');
 
   // 리스트 클릭 핸들러
   const handleListPress = (title: string) => {
@@ -74,16 +64,15 @@ function StoryReadCategory() {
           <SearchInput placeholder="찾고 계신 앤딩을 검색해보세요" />
           <Image
             source={require('../../assets/images/searchImg.png')}
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{ width: 14, height: 14 }}
           />
         </SearchContainer>
 
         <View style={styles.buttonRow}>
-          <CategoryButton text="로맨스" onPress={handleRomancePress} />
-          <CategoryButton text="액션" onPress={handleActionPress} />
-          <CategoryButton text="추리" onPress={handleMysteryPress} />
-          <CategoryButton text="코믹" onPress={handleComedyPress} />
-          <CategoryButton text="판타지" onPress={handleFantasyPress} />
+          <CategoryButton text="단편" onPress={handleShortPress} />
+          <CategoryButton text="중편" onPress={handleMiddlePress} />
+          <CategoryButton text="장편" onPress={handleLongPress} />
         </View>
         <View>
           <List
@@ -139,10 +128,9 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 20,
-    gap: 20,
+    gap: 10,
   },
 });
 

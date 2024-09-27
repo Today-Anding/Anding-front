@@ -84,6 +84,7 @@ const ScrollContainer = styled(ScrollView)`
 
 const Container = styled.View`
   flex: 1;
+  padding-bottom: 50px;
 `;
 
 const HeaderContainer = styled.View`

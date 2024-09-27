@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import GobackButton from '../../components/button/GobackButton';
 import {
@@ -9,8 +9,46 @@ import {
   Gray10px,
 } from '../../components/text/Text';
 import MyPageCarousel from '../../components/carousel/MypageCarousel';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import Config from 'react-native-config';
+
+interface UserInfo {
+  name: string;
+  account: string;
+}
 
 function MyPage() {
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (!token) {
+        console.error('Token is missing');
+        return;
+      }
+
+      try {
+        const apiUrl = Config.API_URL;
+        const response = await axios.get(`${apiUrl}/api/v1/user/getUser`, {
+          headers: {
+            'X-AUTH-TOKEN': token,
+            accept: '*/*',
+          },
+        });
+
+        const { name, account } = response.data;
+        setUserInfo({ name, account });
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [token]);
+
   return (
     <MypageContainer>
       <GobackBox>
@@ -20,8 +58,12 @@ function MyPage() {
         <MypageContent>
           <MypageInfo>
             <MypageInfoLeft>
-              <Black24pxBold>홍길동</Black24pxBold>
-              <Gray10px>사용자@이메일.co.kr</Gray10px>
+              <Black24pxBold>
+                {userInfo ? userInfo.name : '홍길동'}
+              </Black24pxBold>
+              <Gray10px>
+                {userInfo ? userInfo.account : '사용자@이메일.co.kr'}
+              </Gray10px>
             </MypageInfoLeft>
             <Black10px>회원 정보 변경</Black10px>
           </MypageInfo>
@@ -49,9 +91,11 @@ const MypageContainer = styled.View`
   flex: 1;
   background: #ff7d7d;
 `;
+
 const GobackBox = styled.View`
   padding: 23px;
 `;
+
 const WhiteMypageBackground = styled.View`
   position: absolute;
   bottom: 0;

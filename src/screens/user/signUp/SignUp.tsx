@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useForm, Controller } from 'react-hook-form';
-import { TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import axios from 'axios';
 import { BlackLogo } from '../../../components/logo/Logo';
 import GobackButton from '../../../components/button/GobackButton';
-import { Black20px } from '../../../components/text/Text';
+import { Black16px, Black20px } from '../../../components/text/Text';
 import { Inputtext } from '../../../components/input/Input';
 import Config from 'react-native-config';
+import { useNavigation } from '@react-navigation/native';
 
 type FormData = {
   name: string;
@@ -80,7 +81,7 @@ export default function Signup() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/sign-api/sign-up?roles=user`,
+        `${apiUrl}/sign-api/sign-up?roles=admin`,
         {
           account: data.account,
           gender: data.gender,
@@ -103,6 +104,8 @@ export default function Signup() {
       setStep(7);
     }
   };
+
+  const navigation = useNavigation();
 
   return (
     <SignupLayout>
@@ -313,18 +316,20 @@ export default function Signup() {
           </View>
         )}
         {step === 7 && (
-          <SignupTitle>
+          <Step7Box>
+            <BlackLogo />
+            <SubtitleText>{watch('name')} 회원님,</SubtitleText>
+            <TitleText>만나서 반갑습니다!</TitleText>
             <SignUpImgBox>
-              {/* 여기에 축하 이미지를 렌더링 합니다 */}
+              <Image source={require('../../../assets/images/SignupImg.png')} />
             </SignUpImgBox>
-            <TitleText>가입을 축하드립니다</TitleText>
-            <SubtitleText>
-              <HighlightText>{watch('name')}</HighlightText>님
-            </SubtitleText>
-            <LinktoLogin onPress={() => {}}>
-              <ButtonText>로그인 하러가기</ButtonText>
-            </LinktoLogin>
-          </SignupTitle>
+            <Step7BoxBottom>
+              <Black16px>앤딩을 즐길 준비가 되셨나요?</Black16px>
+              <LinktoLogin onPress={() => navigation.navigate('Login')}>
+                <ButtonText>로그인 하기</ButtonText>
+              </LinktoLogin>
+            </Step7BoxBottom>
+          </Step7Box>
         )}
       </SignupForm>
     </SignupLayout>
@@ -356,16 +361,29 @@ const SignupTitle = styled.View`
   margin-top: 70px;
 `;
 
+const Step7Box = styled.View`
+  padding: 47px;
+`;
+
+const Step7BoxBottom = styled.View`
+  align-items: center;
+  margin-top: 90px;
+`;
 const TitleText = styled.Text`
-  font-size: 24px;
-  font-weight: 700;
-  color: #ff5d5d;
+  color: #000;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
 const SubtitleText = styled.Text`
-  color: #949494;
-  font-size: 14px;
-  margin-top: 5px;
+  color: #000;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  margin-top: 70px;
 `;
 
 const InputWrapper = styled.View`
@@ -379,6 +397,7 @@ const Label = styled.Text`
 const Error = styled.Text`
   color: red;
   font-size: 12px;
+  margin-top: 5px;
 `;
 
 const NextButton = styled(TouchableOpacity)`
@@ -394,8 +413,8 @@ const NextButton = styled(TouchableOpacity)`
 
 const ButtonText = styled.Text`
   color: #fff;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const GenderSelect = styled.View`
@@ -417,18 +436,18 @@ const GenderText = styled.Text<{ selected: boolean }>`
 `;
 
 const SignUpImgBox = styled.View`
-  margin-bottom: 20px;
-`;
-
-const HighlightText = styled.Text`
-  color: #ff5d5d;
-  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
 `;
 
 const LinktoLogin = styled(TouchableOpacity)`
+  width: 306px;
+  height: 44px;
   background-color: #ff5d5d;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 4px;
   align-items: center;
+  justify-content: center;
   margin-top: 20px;
 `;
