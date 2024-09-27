@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { White10px, White12px, White20px } from '../../components/text/Text';
 import { ImgBox } from '../../components/imagecontainer/ImgContainer';
-import SampleListImg from '../../assets/images/SampleListImg.png';
 import ReviewComponent from '../../components/review/Review';
 import InterestImg from '../../assets/images/interestImg.png';
 import ReviewCountImg from '../../assets/images/CountReviewImg.png';
@@ -12,31 +11,45 @@ import AndingDetailImg from '../../assets/images/AndingDetailBtn.png';
 import LikeBtnImg from '../../assets/images/LikeBtn.png';
 import SaveBtnImg from '../../assets/images/SaveBtn.png';
 import Modal from '../../components/modal/Modal';
+import SampleListImg from '../../assets/images/SampleListImg.png';
 
-const dummyData = {
-  genre: '판타지',
-  title: '별에서 온 그대',
-  author: '김미희 / 유진희 / 윤비오',
-  summary:
-    '별에서 온 그대는 외계인과 인간의 사랑을 다룬 이야기로, 우주와 지구를 배경으로 한 아름다운 로맨스를 그립니다. 다양한 갈등과 감동적인 순간들이 어우러져 독자들에게 큰 사랑을 받고 있습니다.',
-  tags: ['재미있는', '앤딩을', '지금바로', '여기에서'],
+type Story = {
+  five_id?: number;
+  ten_id?: number;
+  fifteen_id?: number;
+  title: string;
+  description: string;
+  content: string;
+  thumbnail: string;
+  finished: boolean;
 };
 
-const finalImageSource = SampleListImg;
+type RootStackParamList = {
+  StoryInfoReview: { story: Story };
+};
+
+type StoryRouteProp = RouteProp<RootStackParamList, 'StoryInfoReview'>;
 
 function StoryInfoReview() {
   const navigation = useNavigation();
+  const route = useRoute<StoryRouteProp>();
 
-  // 모달창 상태
+  const story = route.params?.story;
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', message: '' });
 
-  // '앤딩 디테일' 버튼 클릭 핸들러
   const handleAndingDetailPress = () => {
-    navigation.navigate('StoryReadDetail', { title: dummyData.title });
+    if (story) {
+      navigation.navigate('StoryReadDetail', {
+        title: story.title,
+        five_id: story.five_id,
+        ten_id: story.ten_id,
+        fifteen_id: story.fifteen_id,
+      });
+    }
   };
 
-  // '좋아요' 버튼 클릭 핸들러
   const handleLikePress = () => {
     setModalContent({
       title: '좋아요',
@@ -45,7 +58,6 @@ function StoryInfoReview() {
     setModalVisible(true);
   };
 
-  // '저장' 버튼 클릭 핸들러
   const handleSavePress = () => {
     setModalContent({
       title: '저장',
@@ -54,17 +66,28 @@ function StoryInfoReview() {
     setModalVisible(true);
   };
 
-  // 모달 확인 버튼 클릭 시 모달 닫기
   const handleConfirm = () => {
     setModalVisible(false);
   };
+
+  if (!story) {
+    return (
+      <ScrollContainer>
+        <InfoPinkBackground>
+          <White20px>스토리 데이터를 불러오지 못했습니다.</White20px>
+        </InfoPinkBackground>
+      </ScrollContainer>
+    );
+  }
 
   return (
     <ScrollContainer>
       <InfoPinkBackground>
         <ContentContainer>
           <ImgBox
-            imageSource={finalImageSource}
+            imageSource={
+              story.thumbnail ? { uri: story.thumbnail } : SampleListImg
+            }
             width={105}
             height={131}
             borderRadius={16}
@@ -72,19 +95,28 @@ function StoryInfoReview() {
           />
           <TextContainer>
             <TitleContainer>
-              <White12px>{dummyData.genre}</White12px>
-              <White20px>{dummyData.title}</White20px>
-              <White12px>글: {dummyData.author}</White12px>
+              <White12px>
+                {story.five_id
+                  ? '단편'
+                  : story.ten_id
+                  ? '중편'
+                  : story.fifteen_id
+                  ? '장편'
+                  : '알 수 없음'}
+              </White12px>
+              <White20px>{story.title}</White20px>
+              <White12px>글: 유채빈 외 3명</White12px>
             </TitleContainer>
             <SummaryContainer>
-              <SummaryText>{dummyData.summary}</SummaryText>
+              <SummaryText>{story.description}</SummaryText>
             </SummaryContainer>
             <TagsContainer>
-              {dummyData.tags.map((tag, index) => (
-                <TagBox key={index}>
-                  <TagText>#{tag}</TagText>
-                </TagBox>
-              ))}
+              <TagBox>
+                <TagText>#재미있는</TagText>
+              </TagBox>
+              <TagBox>
+                <TagText>#앤딩</TagText>
+              </TagBox>
             </TagsContainer>
           </TextContainer>
         </ContentContainer>
@@ -114,7 +146,6 @@ function StoryInfoReview() {
         <ReviewComponent />
       </Container>
 
-      {/* 모달창 */}
       {modalVisible && (
         <Modal
           title={modalContent.title}
