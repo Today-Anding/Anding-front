@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components/native';
-import { Black14px, Pink12px } from '../text/Text';
 import { StyleSheet } from 'react-native';
 
 interface StorySelectBoxProps {
@@ -34,11 +33,20 @@ const StorySelectBoxInnerContainer = styled.View`
   align-items: center;
 `;
 
-const StorySelectBoxText = styled(Black14px)`
-  text-align: center;
+const StorySelectBoxText = styled.Text`
+  color: #000;
+  font-family: 'NotoSansKR';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
-const StorySelectBoxSubtitle = styled(Pink12px)`
+const StorySelectBoxSubtitle = styled.Text`
+  color: #ff7070;
+  font-family: 'NotoSansKR';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
   margin-top: 8px;
 `;
 
@@ -61,7 +69,7 @@ const StorySelectBox: FC<StorySelectBoxProps> = ({ title }) => {
       <StorySelectBoxInnerContainer>
         <StorySelectBoxText>{title}</StorySelectBoxText>
         <StorySelectBoxStroke />
-        <StorySelectBoxSubtitle>Anding 다시보기</StorySelectBoxSubtitle>
+        <StorySelectBoxSubtitle>Anding 이어쓰기</StorySelectBoxSubtitle>
       </StorySelectBoxInnerContainer>
     </StorySelectBoxContainer>
   );

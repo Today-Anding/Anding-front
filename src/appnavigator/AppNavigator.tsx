@@ -50,6 +50,7 @@ function AppNavigator() {
           setAuthState({
             isLoggedIn: isLoggedInValue === 'true',
             account: account || null,
+            token: null,
           }),
         );
       } catch (error) {
@@ -64,12 +65,19 @@ function AppNavigator() {
     const onStateChange = () => {
       const currentRoute = navigationRef.current?.getCurrentRoute();
       const currentRouteName = currentRoute?.name;
+
+      const hideTabBar = currentRouteName
+        ? routeNamesToHideTabBar.includes(
+            currentRouteName as keyof RootStackParamList,
+          )
+        : false;
       const isValidRoute = currentRouteName
         ? routeNamesToShowTabBar.includes(
             currentRouteName as keyof RootStackParamList,
           )
         : false;
-      setShowTabBar(isValidRoute);
+
+      setShowTabBar(!hideTabBar && isValidRoute);
     };
 
     const unsubscribe = navigationRef.current?.addListener(
@@ -87,9 +95,6 @@ function AppNavigator() {
     'StoryReadCategory',
     'SignUpName',
     'Mypage',
-    'AuthSelectionScreen',
-    'Login',
-    'SignUp',
     'StoryWriteCreate',
     'StoryWriteSelect',
     'StoryRoomSelectScreen',
@@ -98,6 +103,13 @@ function AppNavigator() {
     'PreviousStoryScreen',
     'StoryInfoReview',
     'StoryReadDetail',
+  ];
+
+  const routeNamesToHideTabBar: (keyof RootStackParamList)[] = [
+    'Splash',
+    'Login',
+    'SignUp',
+    'AuthSelectionScreen',
   ];
 
   return (

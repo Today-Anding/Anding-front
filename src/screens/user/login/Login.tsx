@@ -42,9 +42,10 @@ function Login() {
         },
       );
 
-      console.log(response.data);
+      const { token } = response.data;
 
-      dispatch(login({ account: data.account }));
+      dispatch(login({ account: data.account, token }));
+
       navigation.navigate('Main');
     } catch (error) {
       console.error('로그인 에러', error);

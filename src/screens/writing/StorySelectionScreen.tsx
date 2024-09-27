@@ -16,28 +16,34 @@ type RootStackParamList = {
   StorySelect: undefined;
   StoryWriteCreate: { roomSize: number };
   StoryRoomSelectScreen: { storyTitle: string };
+  // 추가적인 라우트가 필요하면 여기에 정의
 };
 
 const StorySelectScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const storyData: StoryItem[] = [
-    { id: '1', title: '별', route: 'StoryRoomSelectScreen' },
-    { id: '2', title: '별에', route: 'StoryRoomSelectScreen' },
-    { id: '3', title: '별에서', route: 'StoryRoomSelectScreen' },
-    { id: '4', title: '별에서 온', route: 'StoryRoomSelectScreen' },
-    { id: '5', title: '별에서 온 그', route: 'StoryRoomSelectScreen' },
-    { id: '6', title: '별에서 온 그대', route: 'StoryRoomSelectScreen' },
+    { id: '1', title: '기생충', route: 'StoryRoomSelectScreen' },
+    { id: '2', title: '올드보이', route: 'StoryRoomSelectScreen' },
+    { id: '3', title: '명량', route: 'StoryRoomSelectScreen' },
+    { id: '4', title: '부산행', route: 'StoryRoomSelectScreen' },
+    { id: '5', title: '곡성', route: 'StoryRoomSelectScreen' },
+    { id: '6', title: '도깨비', route: 'StoryRoomSelectScreen' },
+    { id: '7', title: '미스터 션샤인', route: 'StoryRoomSelectScreen' },
+    { id: '8', title: '이태원 클라쓰', route: 'StoryRoomSelectScreen' },
+    { id: '9', title: '사랑의 불시착', route: 'StoryRoomSelectScreen' },
+    { id: '10', title: '스카이 캐슬', route: 'StoryRoomSelectScreen' },
   ];
 
   const renderItem = ({ item }: { item: StoryItem }) => {
     return (
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate(item.route as 'StoryRoomSelectScreen', {
+        onPress={() => {
+          navigation.navigate(item.route, {
             storyTitle: item.title,
-          })
-        }
+            storyId: item.id, 
+          });
+        }}
         style={styles.touchableOpacity}
       >
         <StorySelectBox title={item.title} />
@@ -78,6 +84,7 @@ const StorySelectBackground = styled.View`
   align-items: center;
   justify-content: center;
   z-index: -1;
+  gap: 10px;
 `;
 
 const ContentContainer = styled.View`
@@ -89,9 +96,9 @@ const ContentContainer = styled.View`
 
 const styles = StyleSheet.create({
   touchableOpacity: {
-    width: '100%', // Ensure the TouchableOpacity takes up the width of the parent
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10, // Add padding to make the touchable area larger
+    padding: 10,
   },
 });

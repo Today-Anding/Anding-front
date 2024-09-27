@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  RouteProp,
+  useRoute,
+} from '@react-navigation/native';
 import { WhiteLogo } from '../../components/logo/Logo';
 import {
   Black10px,
@@ -9,19 +14,61 @@ import {
   White16px,
 } from '../../components/text/Text';
 import { Image } from 'react-native';
+import axios from 'axios';
+import Config from 'react-native-config';
 
 type RootStackParamList = {
   StorySelect: undefined;
   StoryWriteCreate: undefined;
-  StoryRoomSelect: { storyTitle: string }; // 새로운 파라미터 추가
+  StoryRoomSelectScreen: { storyTitle: string; storyId: string };
+  StoryTurnScreen: { roomSize: number; storyId: string };
 };
+
+type StoryRoomSelectScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'StoryRoomSelectScreen'
+>;
 
 const StoryRoomSelectScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const route = useRoute<StoryRoomSelectScreenRouteProp>();
+  const { storyTitle, storyId } = route.params;
+
+  const [roomCount5, setRoomCount5] = useState<number>(0);
+  const [roomCount10, setRoomCount10] = useState<number>(0);
+  const [roomCount15, setRoomCount15] = useState<number>(0);
+  const apiUrl = Config.API_URL;
+
+  useEffect(() => {
+    const fetchRoomCount = async (roomSize: number) => {
+      try {
+        let response;
+        if (roomSize === 5) {
+          response = await axios.get(
+            `${apiUrl}/api/v1/story5/countStory5/${storyId}`,
+          );
+          setRoomCount5(response.data['이어진 앤딩(글) 수']);
+        } else if (roomSize === 10) {
+          response = await axios.get(
+            `${apiUrl}/api/v1/story10/countStory10/${storyId}`,
+          );
+          setRoomCount10(response.data['이어진 앤딩(글) 수']);
+        } else if (roomSize === 15) {
+          response = await axios.get(
+            `${apiUrl}/api/v1/story15/countStory15/${storyId}`,
+          );
+          setRoomCount15(response.data['이어진 앤딩(글) 수']);
+        }
+      } catch (error) {
+        console.error('Failed to fetch room count:', error);
+      }
+    };
+
+    [5, 10, 15].forEach(fetchRoomCount);
+  }, [apiUrl, storyId]);
 
   const handleRoomSelect = (roomSize: number) => {
-    // 방 크기를 선택한 후 이동할 화면으로 라우팅
-    navigation.navigate('StoryTurnScreen', { roomSize });
+    navigation.navigate('StoryTurnScreen', { roomSize, storyId });
   };
 
   return (
@@ -45,18 +92,18 @@ const StoryRoomSelectScreen: React.FC = () => {
       <ButtonContainer>
         <RoomButton onPress={() => handleRoomSelect(5)}>
           <Image source={require('../../assets/images/IsRoomTrue.png')} />
-          <RoomButtonText>별에서 온 그대</RoomButtonText>
-          <RoomPeopleText>2/5</RoomPeopleText>
+          <RoomButtonText>{storyTitle}</RoomButtonText>
+          <RoomPeopleText>{roomCount5}/5</RoomPeopleText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(10)}>
           <Image source={require('../../assets/images/IsRoomFalse.png')} />
-          <RoomButtonText>별에서 온 그대</RoomButtonText>
-          <RoomPeopleText>2/5</RoomPeopleText>
+          <RoomButtonText>{storyTitle}</RoomButtonText>
+          <RoomPeopleText>{roomCount10}/10</RoomPeopleText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(15)}>
           <Image source={require('../../assets/images/IsRoomFalse.png')} />
-          <RoomButtonText>별에서 온 그대</RoomButtonText>
-          <RoomPeopleText>2/5</RoomPeopleText>
+          <RoomButtonText>{storyTitle}</RoomButtonText>
+          <RoomPeopleText>{roomCount15}/15</RoomPeopleText>
         </RoomButton>
       </ButtonContainer>
       <StoryTipContainer>
@@ -162,13 +209,17 @@ const RoomPeopleText = styled.Text`
   font-size: 14px;
   font-style: normal;
   font-weight: 300;
-  margin-left: 151px;
+  flex: 1;
+  position: absolute;
+  right: 21px;
 `;
+
 const StoryTipContainer = styled.View`
   align-items: left;
   padding-left: 29px;
   padding-top: 20px;
 `;
+
 const StoryTipStroke = styled.View`
   width: 284px;
   height: 0.5px;
