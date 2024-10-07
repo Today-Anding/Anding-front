@@ -21,7 +21,7 @@ type RootStackParamList = {
   StorySelect: undefined;
   StoryWriteCreate: undefined;
   StoryRoomSelectScreen: { storyTitle: string; storyId: string };
-  StoryTurnScreen: { roomSize: number; storyId: string };
+  StoryTurnScreen: { roomSize: number; storyId: string; storyTitle: string };
 };
 
 type StoryRoomSelectScreenRouteProp = RouteProp<
@@ -68,7 +68,7 @@ const StoryRoomSelectScreen: React.FC = () => {
   }, [apiUrl, storyId]);
 
   const handleRoomSelect = (roomSize: number) => {
-    navigation.navigate('StoryTurnScreen', { roomSize, storyId });
+    navigation.navigate('StoryTurnScreen', { roomSize, storyId, storyTitle });
   };
 
   return (

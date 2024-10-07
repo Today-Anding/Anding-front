@@ -14,12 +14,13 @@ type RootStackParamList = {
   StoryWriteCreate: {
     roomSize: number;
     storyId: string;
+    storyTitle: string;
   };
 };
 
 const StoryCreationScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'StoryWriteCreate'>>();
-  const { roomSize, storyId } = route.params;
+  const { roomSize, storyId, storyTitle } = route.params;
   const [content, setContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showProcessingModal, setShowProcessingModal] = useState(false);
@@ -117,6 +118,8 @@ const StoryCreationScreen: React.FC = () => {
     setShowErrorModal(false);
   };
 
+  console.log('storyTitle:', storyTitle);
+
   return (
     <StorySelectScreenContainer>
       <StorySelectBackground>
@@ -127,8 +130,8 @@ const StoryCreationScreen: React.FC = () => {
       </StorySelectBackground>
       <WritingBox>
         <TurnTitle>
-          <StoryTitle>별에서 온 그대</StoryTitle>
-          <StoryTurnNum>3번째 이야기</StoryTurnNum>
+          <StoryTitle>{storyTitle}</StoryTitle>
+          <StoryTurnNum>앤딩의 {storyId}번째 작품</StoryTurnNum>
         </TurnTitle>
         <StoryCreateBox onChangeContent={setContent} content={content} />
         <CompletedWrite onPress={handleCompleteWriting}>
