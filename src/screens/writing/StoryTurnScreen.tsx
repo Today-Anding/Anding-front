@@ -17,11 +17,13 @@ type RootStackParamList = {
     content: string | null;
     storyId: string;
     position: number;
+    storyTitle: string;
   };
-  StoryTurnScreen: { roomSize: number; storyId: string };
+  StoryTurnScreen: { roomSize: number; storyId: string; storyTitle: string };
   StoryWriteCreate: {
     roomSize: number;
     storyId: string;
+    storyTitle: string;
   };
 };
 
@@ -40,7 +42,7 @@ type StoryTurnScreenRouteProp = RouteProp<
 function StoryTurnScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<StoryTurnScreenRouteProp>();
-  const { roomSize, storyId } = route.params;
+  const { roomSize, storyId, storyTitle } = route.params;
   const [stories, setStories] = useState<Story[]>([]);
   const slideAnim = useRef(new Animated.Value(100)).current;
 
@@ -99,25 +101,29 @@ function StoryTurnScreen() {
     content: string | null,
     storyId: string,
     position: number,
+    storyTitle: string,
   ) => {
     if (content !== null) {
       navigation.navigate('PreviousStoryScreen', {
         content,
         storyId,
         position,
+        storyTitle,
       });
     }
+    console.log('Received storyTitle:', storyTitle);
   };
 
   const handleTurnButtonPress = async (storyId: string, position: number) => {
     const content = await fetchStoryContent(storyId, position);
-    navigateToPreviousStoryScreen(content, storyId, position);
+    navigateToPreviousStoryScreen(content, storyId, position, storyTitle);
   };
 
   const handleAddStory = () => {
     navigation.navigate('StoryWriteCreate', {
       roomSize: roomSize,
       storyId: storyId,
+      storyTitle: storyTitle,
     });
   };
 

@@ -7,23 +7,18 @@ type RouteParams = {
   content: string | null;
   storyId: string;
   position: number;
+  storyTitle: string;
 };
-
-interface Story {
-  story_id: number;
-  content: string;
-  author: string;
-  message: string | null;
-}
 
 function PreviousStoryScreen() {
   const route = useRoute();
-  const { content, storyId, position } = route.params as RouteParams;
+  const { storyTitle } = route.params as RouteParams;
   const { content: initialContent } = route.params as RouteParams;
-  const [storyTitle, setStoryTitle] = useState<string | null>(null);
   const [storyContent, setStoryContent] = useState<string | null>(
     initialContent,
   );
+
+  console.log('Received storyTitle:', storyTitle);
 
   return (
     <Container>
