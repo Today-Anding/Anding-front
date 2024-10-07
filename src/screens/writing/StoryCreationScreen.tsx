@@ -6,7 +6,7 @@ import StoryCreateBox from '../../components/storycreatebox/StoryCreateBox';
 import Modal from '../../components/modal/Modal';
 import axios from 'axios';
 import Config from 'react-native-config';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -26,15 +26,71 @@ const StoryCreationScreen: React.FC = () => {
   const [showProcessingModal, setShowProcessingModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const navigation = useNavigation();
 
   const token = useSelector((state: RootState) => state.auth.token);
 
+  // 글 작성 완료 후 적정성 판별 요청
   const handleCompleteWriting = () => {
     setShowModal(true);
   };
 
   const handleConfirm = async () => {
     setShowModal(false);
+    setShowProcessingModal(true);
+
+    const apiUrl = Config.API_URL;
+    const validationEndpoint = `${apiUrl}/api/v1/main/story5Compare`;
+
+    if (!token) {
+      console.error('No token found');
+      setShowErrorModal(true);
+      return;
+    }
+
+    try {
+      const validationResponse = await axios.post(
+        `${validationEndpoint}?fiveId=${storyId}&newContent=${encodeURIComponent(
+          content,
+        )}`,
+        {},
+        {
+          headers: {
+            accept: '*/*',
+            'X-AUTH-TOKEN': token,
+          },
+        },
+      );
+
+      const validationResult = validationResponse.data;
+
+      if (validationResult.includes('yes')) {
+        setShowSuccessModal(true); // 'yes'가 포함된 경우 성공 모달로 이동
+      } else if (validationResult.includes('no')) {
+        setShowErrorModal(true); // 'no'가 포함된 경우 에러 모달로 이동
+      } else {
+        console.error(
+          'Unexpected response from validation API:',
+          validationResult,
+        );
+        setShowErrorModal(true); // 그 외의 경우 에러 처리
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          'Axios error during validation:',
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error('Unknown error during validation:', error);
+      }
+      setShowErrorModal(true);
+    } finally {
+      setShowProcessingModal(false);
+    }
+  };
+
+  const handleStoryRegistration = async () => {
     setShowProcessingModal(true);
 
     const apiUrl = Config.API_URL;
@@ -75,9 +131,6 @@ const StoryCreationScreen: React.FC = () => {
     }
 
     try {
-      console.log('Endpoint:', endpoint);
-      console.log('Request Data:', requestData);
-
       const response = await axios.post(endpoint, requestData, {
         headers: {
           'Content-Type': 'application/json',
@@ -87,11 +140,8 @@ const StoryCreationScreen: React.FC = () => {
       });
 
       if (response.status === 200) {
-        console.log('Story created successfully');
-        setShowSuccessModal(true);
+        navigation.navigate('StoryWriteSelect');
       } else {
-        console.error('Unexpected response:', response.status);
-        setShowErrorModal(true);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -110,15 +160,9 @@ const StoryCreationScreen: React.FC = () => {
     setShowProcessingModal(false);
   };
 
-  const handleSuccessConfirm = () => {
-    setShowSuccessModal(false);
-  };
-
   const handleErrorConfirm = () => {
     setShowErrorModal(false);
   };
-
-  console.log('storyTitle:', storyTitle);
 
   return (
     <StorySelectScreenContainer>
@@ -161,21 +205,21 @@ const StoryCreationScreen: React.FC = () => {
       {showSuccessModal && (
         <Modal
           title="적정성 판별 완료!"
-          message="글이 정상적으로 등록 되었습니다."
-          onConfirm={handleSuccessConfirm}
-          onCancel={() => {}}
-          confirmText="확인"
+          message="글이 정상적으로 등록 되었습니다. 쓰기 페이지로 돌아갑니다."
+          onConfirm={handleStoryRegistration}
           cancelText=""
+          confirmText="확인"
+          onCancel={() => {}}
         />
       )}
       {showErrorModal && (
         <Modal
           title="등록 실패"
-          message="글 등록 중 문제가 발생했습니다. 다시 시도해 주세요."
+          message="글의 맥락이 맞지 않습니다. 다시 앤딩을 작성해주세요."
           onConfirm={handleErrorConfirm}
-          onCancel={() => {}}
-          confirmText="확인"
           cancelText=""
+          confirmText="확인"
+          onCancel={() => {}}
         />
       )}
     </StorySelectScreenContainer>
