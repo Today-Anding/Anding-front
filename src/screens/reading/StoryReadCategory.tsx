@@ -15,6 +15,8 @@ import axios from 'axios';
 import styled from 'styled-components/native';
 import SampleListImg from '../../assets/images/SampleListImg.png';
 import Config from 'react-native-config';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 // 타입 정의
 type Story = {
@@ -117,17 +119,67 @@ const StoryReadCategory = () => {
     }
   };
 
+  const token = useSelector((state: RootState) => state.auth.token);
+
   // 모달 확인 버튼 핸들러
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setIsModalVisible(false);
-    if (selectedStory) {
-      navigation.navigate('StoryInfoReview', { story: selectedStory });
+    if (!selectedStory) return;
+
+    const apiUrl = Config.API_URL;
+    let endpoint = '';
+    let requestData = {
+      fifteenId: 0,
+      fiveId: 0,
+      tenId: 0,
+    };
+
+    // 스토리 ID에 맞게 requestData를 설정합니다.
+    if (selectedStory.five_id) {
+      endpoint = `${apiUrl}/api/v1/star/createStar/five`;
+      requestData.fiveId = selectedStory.five_id;
+    } else if (selectedStory.ten_id) {
+      endpoint = `${apiUrl}/api/v1/star/createStar/ten`;
+      requestData.tenId = selectedStory.ten_id;
+    } else if (selectedStory.fifteen_id) {
+      endpoint = `${apiUrl}/api/v1/star/createStar/fifteen`;
+      requestData.fifteenId = selectedStory.fifteen_id;
+    }
+
+    try {
+      const response = await axios.post(endpoint, requestData, {
+        headers: {
+          accept: '*/*',
+          'Content-Type': 'application/json',
+          'X-AUTH-TOKEN': token, // 여기에 실제 토큰을 사용
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('Story read successfully started:', response.data);
+        // 성공적으로 API 요청이 완료되면 StoryInfoReview 화면으로 이동
+        navigation.navigate('StoryInfoReview', { story: selectedStory });
+      }
+    } catch (error) {
+      console.error('Error starting story read:', error);
+      // 실패 시 처리
     }
   };
 
   // 모달 취소 버튼 핸들러
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const getThumbnailSource = (story: Story) => {
+    switch (story.thumbnail) {
+      case 'parasite.jpeg':
+        return require('../../assets/images/parasite.jpeg');
+      case 'oldboy.jpeg':
+        return require('../../assets/images/oldboy.jpeg');
+      default:
+        return SampleListImg;
+    }
   };
 
   return (
@@ -176,14 +228,11 @@ const StoryReadCategory = () => {
             }}
           />
         </View>
-
         <ScrollView>
           {stories.map((story, index) => (
             <List
               key={index}
-              imageSource={
-                story.thumbnail ? { uri: story.thumbnail } : SampleListImg
-              }
+              imageSource={getThumbnailSource(story)}
               rank={index + 1}
               title={story.title}
               likes="좋아요 1.5K" // 임시로 하드코딩
