@@ -111,7 +111,6 @@ function StoryTurnScreen() {
         storyTitle,
       });
     }
-    console.log('Received storyTitle:', storyTitle);
   };
 
   const handleTurnButtonPress = async (storyId: string, position: number) => {

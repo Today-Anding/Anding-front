@@ -40,7 +40,28 @@ const StoryCreationScreen: React.FC = () => {
     setShowProcessingModal(true);
 
     const apiUrl = Config.API_URL;
-    const validationEndpoint = `${apiUrl}/api/v1/main/story5Compare`;
+    let validationEndpoint = '';
+
+    switch (roomSize) {
+      case 5:
+        validationEndpoint = `${apiUrl}/api/v1/main/story5Compare?fiveId=${storyId}&newContent=${encodeURIComponent(
+          content,
+        )}`;
+        break;
+      case 10:
+        validationEndpoint = `${apiUrl}/api/v1/main/story10Compare?tenId=${storyId}&newContent=${encodeURIComponent(
+          content,
+        )}`;
+        break;
+      case 15:
+        validationEndpoint = `${apiUrl}/api/v1/main/story15Compare?fifteenId=${storyId}&newContent=${encodeURIComponent(
+          content,
+        )}`;
+        break;
+      default:
+        setShowErrorModal(true);
+        return;
+    }
 
     if (!token) {
       console.error('No token found');
@@ -50,9 +71,7 @@ const StoryCreationScreen: React.FC = () => {
 
     try {
       const validationResponse = await axios.post(
-        `${validationEndpoint}?fiveId=${storyId}&newContent=${encodeURIComponent(
-          content,
-        )}`,
+        validationEndpoint,
         {},
         {
           headers: {
