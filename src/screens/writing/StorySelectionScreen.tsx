@@ -23,16 +23,12 @@ const StorySelectScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const storyData: StoryItem[] = [
-    { id: '1', title: '기생충', route: 'StoryRoomSelectScreen' },
-    { id: '2', title: '올드보이', route: 'StoryRoomSelectScreen' },
-    { id: '3', title: '명량', route: 'StoryRoomSelectScreen' },
-    { id: '4', title: '부산행', route: 'StoryRoomSelectScreen' },
-    { id: '5', title: '곡성', route: 'StoryRoomSelectScreen' },
-    { id: '6', title: '도깨비', route: 'StoryRoomSelectScreen' },
-    { id: '7', title: '미스터 션샤인', route: 'StoryRoomSelectScreen' },
-    { id: '8', title: '이태원 클라쓰', route: 'StoryRoomSelectScreen' },
-    { id: '9', title: '사랑의 불시착', route: 'StoryRoomSelectScreen' },
-    { id: '10', title: '스카이 캐슬', route: 'StoryRoomSelectScreen' },
+    { id: '1', title: '꿀벌의 예언', route: 'StoryRoomSelectScreen' },
+    { id: '2', title: '제국의 하인', route: 'StoryRoomSelectScreen' },
+    { id: '3', title: '토마토가 돼라', route: 'StoryRoomSelectScreen' },
+    { id: '4', title: '전자오락수호대', route: 'StoryRoomSelectScreen' },
+    { id: '5', title: '우리 안 사귀어!!', route: 'StoryRoomSelectScreen' },
+    { id: '6', title: '어느 마법사의 식당', route: 'StoryRoomSelectScreen' },
   ];
 
   const renderItem = ({ item }: { item: StoryItem }) => {

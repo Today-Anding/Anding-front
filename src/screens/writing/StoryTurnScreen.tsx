@@ -64,19 +64,7 @@ function StoryTurnScreen() {
           : [];
         setStories(validStories);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.error('Axios error:', error.message);
-          if (error.response) {
-            console.error(
-              'Response error:',
-              error.response.status,
-              error.response.data,
-            );
-          }
-        } else {
-          console.error('Unknown error:', error);
-        }
-        Alert.alert('오류', '이야기를 불러오는 데 실패했습니다.');
+        console.error('Error fetching stories:', error);
       }
     };
 
@@ -97,6 +85,27 @@ function StoryTurnScreen() {
     }
   };
 
+  const fetchStoryDescription = async (storyId: string) => {
+    try {
+      const apiUrl = Config.API_URL;
+      let endpoint = '';
+
+      if (roomSize === 5) {
+        endpoint = `${apiUrl}/api/v1/five/getFive/${storyId}`;
+      } else if (roomSize === 10) {
+        endpoint = `${apiUrl}/api/v1/ten/getTen/${storyId}`;
+      } else if (roomSize === 15) {
+        endpoint = `${apiUrl}/api/v1/fifteen/getFifteen/${storyId}`;
+      }
+
+      const response = await axios.get(endpoint);
+      return response.data.description;
+    } catch (error) {
+      console.error('Error fetching story description:', error);
+      return null;
+    }
+  };
+
   const navigateToPreviousStoryScreen = (
     content: string | null,
     storyId: string,
@@ -111,6 +120,14 @@ function StoryTurnScreen() {
         storyTitle,
       });
     }
+  };
+
+  const handleDescriptionButtonPress = async (
+    storyId: string,
+    position: number,
+  ) => {
+    const content = await fetchStoryDescription(storyId);
+    navigateToPreviousStoryScreen(content, storyId, position, storyTitle);
   };
 
   const handleTurnButtonPress = async (storyId: string, position: number) => {
@@ -143,24 +160,40 @@ function StoryTurnScreen() {
           </TextContainer>
         </StorySelectWhiteBox>
       </StorySelectBackground>
-      <TurnBox>
-        {stories.length > 0 ? (
-          stories.map((story, index) => (
-            <TurnButton
-              key={story.story_id}
-              onPress={() => handleTurnButtonPress(storyId, index + 1)}
-            >
-              <Black12px>{`${index + 1}번째 앤딩`}</Black12px>
-              <TurnButtonStroke />
-              <Black10px>
-                {index === 0 ? '시놉시스' : `작가: ${story.author}`}
-              </Black10px>
-            </TurnButton>
-          ))
-        ) : (
-          <Black10px>이야기가 없습니다.</Black10px>
-        )}
-      </TurnBox>
+      <TurnBoxContainer>
+        <TurnBox>
+          {stories.length > 0 ? (
+            stories.map((story, index) => (
+              <TurnButton
+                key={story.story_id}
+                onPress={() => handleDescriptionButtonPress(storyId, index + 1)}
+              >
+                <Black12px>{`${index + 1}번째 앤딩`}</Black12px>
+                <TurnButtonStroke />
+                <Black10px>시놉시스</Black10px>
+              </TurnButton>
+            ))
+          ) : (
+            <></>
+          )}
+        </TurnBox>
+        <TurnBox>
+          {stories.length > 0 ? (
+            stories.map((story, index) => (
+              <TurnButton
+                key={story.story_id}
+                onPress={() => handleTurnButtonPress(storyId, index + 1)}
+              >
+                <Black12px>{`${index + 2}번째 앤딩`}</Black12px>
+                <TurnButtonStroke />
+                <Black10px>{`작가: ${story.author}`}</Black10px>
+              </TurnButton>
+            ))
+          ) : (
+            <Black10px>완료된 앤딩입니다.</Black10px>
+          )}
+        </TurnBox>
+      </TurnBoxContainer>
       <AddStoryContainer style={animatedStyle}>
         <AddStoryText>
           <Black10px>더하기 버튼을 눌러서</Black10px>
@@ -211,8 +244,10 @@ const TextContainer = styled.View`
   margin-left: 10px;
 `;
 
-const TurnBox = styled.View`
+const TurnBoxContainer = styled.View`
   padding-top: 49px;
+`;
+const TurnBox = styled.View`
   align-items: center;
 `;
 
