@@ -199,7 +199,7 @@ const CustomButton = styled.TouchableOpacity`
 `;
 
 const ButtonText = styled.Text`
-  color: #ff6565;
+  color: #ff7d7d;
   font-size: 12px;
 `;
 

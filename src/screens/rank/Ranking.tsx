@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { WhiteLogo } from '../../components/logo/Logo';
 import SideNav from '../../components/sidenav/SideNav';
-import { Image, TouchableOpacity, ScrollView, View } from 'react-native';
+import { ImageSourcePropType, View } from 'react-native';
 import {
   Black10pxMid,
   Black20px,
-  Black24px,
   Black24pxBold,
   Pink5px,
 } from '../../components/text/Text';
 import { List } from '../../components/list/List';
 import SampleListImg from '../../assets/images/SampleListImg.png';
 
-function Ranking() {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [selectedBox, setSelectedBox] = useState('cumulative');
+interface RankingProps {}
+
+const Ranking: React.FC<RankingProps> = () => {
+  const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [selectedBox, setSelectedBox] = useState<'cumulative' | 'writer'>(
+    'cumulative',
+  );
 
   return (
     <RankingScreen>
@@ -23,9 +26,8 @@ function Ranking() {
         <RankingHead>
           <WhiteLogo />
           <HamburgerButton onPress={() => setSidebarVisible(!sidebarVisible)}>
-            <Image
+            <StyledImage
               source={require('../../assets/images/Hamburger.png')}
-              style={{ width: 24, height: 24 }}
             />
           </HamburgerButton>
         </RankingHead>
@@ -37,11 +39,11 @@ function Ranking() {
             <Black20px>확인하세요</Black20px>
             <SmallGray7>지금 핫한 앤딩을 만나보세요!</SmallGray7>
           </BigWhiteBoxLeft>
-          <Image source={require('../../assets/images/RankingImg.png')} />
+          <StyledImage source={require('../../assets/images/RankingImg.png')} />
         </BigWhiteBox>
         <SmallWhiteBox>
           <RowContainer onPress={() => setSelectedBox('cumulative')}>
-            <Image
+            <StyledImage
               source={require('../../assets/images/CumulativeRankImg.png')}
             />
             <SmallWhiteBoxTextBox>
@@ -49,11 +51,13 @@ function Ranking() {
               <Black10pxMid>누적랭킹</Black10pxMid>
             </SmallWhiteBoxTextBox>
           </RowContainer>
-          <Image
+          <StyledImage
             source={require('../../assets/images/SmallWhiteBoxStroke.png')}
           />
           <RowContainer onPress={() => setSelectedBox('writer')}>
-            <Image source={require('../../assets/images/WriterRankImg.png')} />
+            <StyledImage
+              source={require('../../assets/images/WriterRankImg.png')}
+            />
             <SmallWhiteBoxTextBox>
               <Pink5px>TODAY’S ANDING</Pink5px>
               <Black10pxMid>작가랭킹</Black10pxMid>
@@ -65,19 +69,17 @@ function Ranking() {
         visible={sidebarVisible}
         onClose={() => setSidebarVisible(false)}
         isLoggedIn={false}
-        onLogout={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onLogout={() => console.log('Logout function')}
       />
       <ScrollViewContainer>
-        <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+        <StyledScrollView>
           {selectedBox === 'cumulative' && (
             <View>
               <TextContent>누적 랭킹</TextContent>
               {[...Array(10)].map((_, i) => (
                 <List
                   key={i}
-                  imageSource={SampleListImg}
+                  imageSource={SampleListImg as ImageSourcePropType}
                   rank={i + 1}
                   title="별에서 온 그대"
                   likes="좋아요 1.5K"
@@ -93,7 +95,7 @@ function Ranking() {
               {[...Array(10)].map((_, i) => (
                 <List
                   key={i}
-                  imageSource={SampleListImg}
+                  imageSource={SampleListImg as ImageSourcePropType}
                   rank={i + 1}
                   title="유채은"
                   likes="좋아요 1.5K"
@@ -103,11 +105,11 @@ function Ranking() {
               ))}
             </View>
           )}
-        </ScrollView>
+        </StyledScrollView>
       </ScrollViewContainer>
     </RankingScreen>
   );
-}
+};
 
 export default Ranking;
 
@@ -128,6 +130,7 @@ const RankingHead = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
 const HamburgerButton = styled.TouchableOpacity`
   margin-left: 100px;
 `;
@@ -143,14 +146,15 @@ const BigWhiteBox = styled.View`
   padding-top: 26px;
   flex-direction: row;
 `;
+
 const BigWhiteBoxLeft = styled.View`
   padding-right: 25px;
 `;
+
 const SmallGray7 = styled.Text`
   color: #a3a3a3;
   font-family: 'Noto Sans KR';
   font-size: 7px;
-  font-style: normal;
   font-weight: 400;
 `;
 
@@ -159,12 +163,12 @@ const SmallWhiteBox = styled.View`
   height: 62px;
   border-radius: 15px;
   background: #fff;
-  gap: 30px;
   flex-direction: row;
   margin-top: 9px;
   align-items: center;
   padding: 9px;
   justify-content: center;
+  gap: 30px;
 `;
 
 const RowContainer = styled.TouchableOpacity`
@@ -179,6 +183,7 @@ const SmallWhiteBoxTextBox = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
 const ScrollViewContainer = styled.View`
   flex: 1;
   padding-top: 7px;
@@ -189,4 +194,10 @@ const TextContent = styled.Text`
   color: #000;
   font-family: 'Noto Sans KR';
   font-size: 10px;
+`;
+
+const StyledImage = styled.Image``;
+
+const StyledScrollView = styled.ScrollView`
+  padding-bottom: 20px;
 `;

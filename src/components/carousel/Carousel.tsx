@@ -85,7 +85,7 @@ const PaginationDot = styled.View<{ active: boolean }>`
   width: 8px;
   height: 8px;
   border-radius: 4px;
-  background-color: ${({ active }) => (active ? '#ff7070' : '#ddd')};
+  background-color: ${({ active }) => (active ? '#ff7d7d' : '#ddd')};
   margin: 0 5px;
 `;
 

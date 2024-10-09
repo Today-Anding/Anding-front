@@ -155,7 +155,7 @@ const Error = styled.Text`
 const LoginButton = styled(TouchableOpacity)`
   width: 336px;
   height: 44px;
-  background-color: #ff5d5d;
+  background-color: #ff7d7d;
   padding: 10px;
   border-radius: 8px;
   align-items: center;
@@ -176,7 +176,7 @@ const WelcomeText = styled.Text`
 `;
 
 const HighlightText = styled.Text`
-  color: #ff5d5d;
+  color: #ff7d7d;
   font-weight: 700;
 `;
 

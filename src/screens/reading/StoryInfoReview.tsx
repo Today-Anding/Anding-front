@@ -17,6 +17,7 @@ import axios from 'axios';
 import Config from 'react-native-config';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Story = {
   five_id?: number;
@@ -31,12 +32,24 @@ type Story = {
 
 type RootStackParamList = {
   StoryInfoReview: { story: Story };
+  StoryReadDetail: {
+    title: string;
+    five_id?: number;
+    ten_id?: number;
+    fifteen_id?: number;
+  };
 };
 
+type StoryInfoReviewNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'StoryInfoReview'
+>;
 type StoryRouteProp = RouteProp<RootStackParamList, 'StoryInfoReview'>;
 
-function StoryInfoReview() {
-  const navigation = useNavigation();
+const API_URL = Config.API_URL;
+
+const StoryInfoReview: React.FC = () => {
+  const navigation = useNavigation<StoryInfoReviewNavigationProp>();
   const route = useRoute<StoryRouteProp>();
   const token = useSelector((state: RootState) => state.auth.token);
 
@@ -57,37 +70,17 @@ function StoryInfoReview() {
     }
   };
 
-  const handleLikePress = () => {
-    setModalContent({
-      title: '좋아요',
-      message: '좋아요를 눌렀습니다.',
-    });
-    setModalVisible(true);
-  };
+  const getRequestData = (story: Story) => ({
+    fifteenId: story.fifteen_id || 0,
+    fiveId: story.five_id || 0,
+    tenId: story.ten_id || 0,
+  });
 
-  const handleSavePress = async () => {
-    if (!story) return;
-
-    const apiUrl = Config.API_URL;
-    let endpoint = '';
-    let requestData = {
-      fifteenId: 0,
-      fiveId: 0,
-      tenId: 0,
-    };
-
-    // 스토리 ID에 맞게 requestData를 설정합니다.
-    if (story.five_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/five`;
-      requestData.fiveId = story.five_id;
-    } else if (story.ten_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/ten`;
-      requestData.tenId = story.ten_id;
-    } else if (story.fifteen_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/fifteen`;
-      requestData.fifteenId = story.fifteen_id;
-    }
-
+  const handlePress = async (
+    endpoint: string,
+    requestData: any,
+    successMessage: string,
+  ) => {
     try {
       const response = await axios.post(endpoint, requestData, {
         headers: {
@@ -98,23 +91,39 @@ function StoryInfoReview() {
       });
 
       if (response.status === 200) {
-        setIsSaved(!isSaved); // 저장 상태를 스위칭
         setModalContent({
-          title: '저장',
-          message: isSaved
-            ? '앤딩 저장이 취소되었습니다.'
-            : '앤딩을 저장했습니다.',
+          title: successMessage,
+          message: `${successMessage}를 완료했습니다.`,
         });
         setModalVisible(true);
       }
     } catch (error) {
-      console.error('Error starting story save:', error);
+      console.error(`Error during ${successMessage}:`, error);
     }
   };
 
-  const handleConfirm = () => {
-    setModalVisible(false);
+  const handleLikePress = () => {
+    if (!story) return;
+    const endpoint = `${API_URL}/api/v1/liked/createLikedForAnding/${
+      story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+    }`;
+    handlePress(endpoint, getRequestData(story), '좋아요');
   };
+
+  const handleSavePress = () => {
+    if (!story) return;
+    const endpoint = `${API_URL}/api/v1/star/createStar/${
+      story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+    }`;
+    handlePress(
+      endpoint,
+      getRequestData(story),
+      isSaved ? '저장 취소' : '저장',
+    );
+    setIsSaved(!isSaved);
+  };
+
+  const handleConfirm = () => setModalVisible(false);
 
   if (!story) {
     return (
@@ -127,14 +136,11 @@ function StoryInfoReview() {
   }
 
   const getThumbnailSource = () => {
-    switch (story.thumbnail) {
-      case 'parasite.jpeg':
-        return require('../../assets/images/parasite.jpeg');
-      case 'oldboy.jpeg':
-        return require('../../assets/images/oldboy.jpeg');
-      default:
-        return SampleListImg;
-    }
+    const thumbnails: { [key: string]: any } = {
+      'parasite.jpeg': require('../../assets/images/parasite.jpeg'),
+      'oldboy.jpeg': require('../../assets/images/oldboy.jpeg'),
+    };
+    return thumbnails[story.thumbnail] || SampleListImg;
   };
 
   return (
@@ -212,7 +218,7 @@ function StoryInfoReview() {
       )}
     </>
   );
-}
+};
 
 const InfoPinkBackground = styled.View`
   width: 100%;

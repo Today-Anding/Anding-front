@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
+import axios from 'axios';
 import { WhiteLogo } from '../../components/logo/Logo';
 import MainCarousel from '../../components/carousel/Carousel';
 import {
@@ -11,18 +12,26 @@ import {
   White16px,
   White16pxBold,
 } from '../../components/text/Text';
-import { Image, TouchableOpacity } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SideNav from '../../components/sidenav/SideNav';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { logout } from '../../store/authSlice';
+import Config from 'react-native-config';
+import { RootStackParamList } from '../../types/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type MainScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'StoryReadCategory'
+>;
 
 const Main: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<MainScreenNavigationProp>();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const [recentTitles, setRecentTitles] = useState<string[]>([]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -35,18 +44,37 @@ const Main: React.FC = () => {
     }, []),
   );
 
-  // Carousel items
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  useEffect(() => {
+    const fetchRecentTitles = async () => {
+      try {
+        const apiUrl = Config.API_URL;
+        const response = await axios.get(
+          `${apiUrl}/api/v1/star/getTop4RecentStar`,
+          {
+            headers: {
+              'X-AUTH-TOKEN': token,
+              accept: '*/*',
+            },
+          },
+        );
+
+        const titles = response.data.items.map((item: any) => item.title);
+        setRecentTitles(titles);
+      } catch (error) {
+        console.error('Error fetching recent titles:', error);
+      }
+    };
+
+    fetchRecentTitles();
+  }, [token]);
+
   const carouselItems = [
     { imageSource: require('../../assets/images/Carousel1.png') },
     { imageSource: require('../../assets/images/Carousel2.png') },
     { imageSource: require('../../assets/images/Carousel3.png') },
   ];
-  useFocusEffect(
-    useCallback(() => {
-      // Close the sidebar when the screen is focused
-      setSidebarVisible(false);
-    }, []),
-  );
 
   return (
     <MainScreen>
@@ -56,10 +84,8 @@ const Main: React.FC = () => {
             <WhiteLogo />
           </LogoWrapper>
           <HamburgerButton onPress={() => setSidebarVisible(!sidebarVisible)}>
-            <Image
+            <HamburgerIcon
               source={require('../../assets/images/Hamburger.png')}
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 24, height: 24 }}
             />
           </HamburgerButton>
         </HeaderBox>
@@ -73,20 +99,16 @@ const Main: React.FC = () => {
       </MainScreenBackgroundPink>
       <BoxContainer>
         <ImageWrapper>
-          <Image source={require('../../assets/images/MainSample1.png')} />
+          <MainImage source={require('../../assets/images/MainSample1.png')} />
         </ImageWrapper>
         <TextContainer>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('StoryReadCategory')}
-          >
+          <Button onPress={() => navigation.navigate('StoryReadCategory')}>
             <TopText>Anding 읽기</TopText>
-          </TouchableOpacity>
+          </Button>
           <Divider />
-          <TouchableOpacity
-            onPress={() => navigation.navigate('StoryWriteSelect')}
-          >
+          <Button onPress={() => navigation.navigate('StoryWriteSelect')}>
             <BottomText>새 Anding 쓰기</BottomText>
-          </TouchableOpacity>
+          </Button>
         </TextContainer>
       </BoxContainer>
       <MainScreenBackgroundWhite>
@@ -96,9 +118,9 @@ const Main: React.FC = () => {
           </Black17px>
         </HeaderContainer>
         <GridContainer>
-          {[...Array(4)].map((_, index) => (
+          {recentTitles.map((title, index) => (
             <MainMyAnding key={index}>
-              <Black14px>별에서 온 그대</Black14px>
+              <Black14px>{title}</Black14px>
               <SmallDivider />
               <Pink12px>Anding 다시 보기</Pink12px>
             </MainMyAnding>
@@ -128,6 +150,7 @@ const MainScreenBackgroundPink = styled.View`
   align-items: center;
   z-index: 1;
 `;
+
 const MainText = styled.View`
   gap: 10px;
   align-items: center;
@@ -145,6 +168,11 @@ const LogoWrapper = styled.View`
 const HamburgerButton = styled.TouchableOpacity`
   margin-top: 32px;
   margin-left: 90px;
+`;
+
+const HamburgerIcon = styled.Image`
+  width: 24px;
+  height: 24px;
 `;
 
 const BoxContainer = styled.View`
@@ -170,11 +198,18 @@ const ImageWrapper = styled.View`
   margin-right: 21.5px;
 `;
 
+const MainImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 const TextContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
+
+const Button = styled.TouchableOpacity``;
 
 const TopText = styled.Text`
   color: #ff7070;
@@ -241,8 +276,6 @@ const MainMyAnding = styled.TouchableOpacity`
   box-shadow: 3px 4px 10.9px rgba(255, 141, 141, 0.25);
   backdrop-filter: blur(15px);
   background-color: rgb(255, 255, 255);
-
-  /* 그림자 효과 추가 */
   shadow-color: #ff9797;
   shadow-offset: {
     width: 4px;
