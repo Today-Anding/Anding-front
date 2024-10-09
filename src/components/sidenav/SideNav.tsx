@@ -21,13 +21,16 @@ const SideNav: React.FC<SideNavProps> = ({
 
   if (!visible) return null;
 
+  const handleLogout = () => {
+    onLogout();
+    navigation.navigate('AuthSelectionScreen');
+  };
+
   return (
     <>
-      {/* Backdrop for blur effect */}
       <TouchableWithoutFeedback onPress={onClose}>
         <Backdrop />
       </TouchableWithoutFeedback>
-
       <SidebarContainer>
         <CloseButton onPress={onClose}>✕</CloseButton>
         <SideWhiteLogoText>today Anding</SideWhiteLogoText>
@@ -43,12 +46,8 @@ const SideNav: React.FC<SideNavProps> = ({
           <Image source={require('../../assets/images/sideNav3.png')} />
           <ButtonText>랭킹페이지</ButtonText>
         </Button>
-        <Button onPress={() => navigation.navigate('Details4')}>
-          <Image source={require('../../assets/images/sideNav4.png')} />
-          <ButtonText>설정</ButtonText>
-        </Button>
         {isLoggedIn ? (
-          <Button onPress={onLogout}>
+          <Button onPress={handleLogout}>
             <BottomText>로그아웃</BottomText>
           </Button>
         ) : (
@@ -96,7 +95,7 @@ const CloseButton = styled.Text`
 `;
 
 const Button = styled.TouchableOpacity`
-  margin-top: 20px;
+  margin-top: 40px;
   align-items: center;
   padding: 10px;
 `;

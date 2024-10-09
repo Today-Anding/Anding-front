@@ -1,19 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, Dimensions, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
+import axios from 'axios';
 import { Black16px, Pink12pxBold } from '../text/Text';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import Config from 'react-native-config';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
-const carouselItems = [
-  { title: '별에서 온 그대' },
-  { title: '미스터 션샤인' },
-  { title: '도깨비' },
-  { title: '응답하라 1988' },
-];
-
 function MyPageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // 추가된 상태: API로부터 받아온 carousel 데이터 저장
+  const [carouselItems, setCarouselItems] = useState<{ title: string }[]>([]);
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  // API 호출을 위한 useEffect
+  useEffect(() => {
+    const fetchCarouselItems = async () => {
+      try {
+        const apiUrl = Config.API_URL;
+        const response = await axios.get(
+          `${apiUrl}/api/v1/star/getTop4RecentStar`,
+          {
+            headers: {
+              'X-AUTH-TOKEN': token,
+              accept: '*/*',
+            },
+          },
+        );
+
+        const items = response.data.items.map((item: any) => ({
+          title: item.title,
+        }));
+        setCarouselItems(items);
+      } catch (error) {
+        console.error('Error fetching carousel items:', error);
+      }
+    };
+
+    fetchCarouselItems();
+  }, []);
 
   const handleScroll = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;

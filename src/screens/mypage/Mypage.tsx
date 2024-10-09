@@ -65,7 +65,6 @@ function MyPage() {
                 {userInfo ? userInfo.account : '사용자@이메일.co.kr'}
               </Gray10px>
             </MypageInfoLeft>
-            <Black10px>회원 정보 변경</Black10px>
           </MypageInfo>
           <MypageListBox>
             <Black12pxLight>내가 쓰고있는 글</Black12pxLight>

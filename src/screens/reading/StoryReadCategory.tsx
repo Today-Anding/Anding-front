@@ -18,7 +18,7 @@ import Config from 'react-native-config';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 
-// 타입 정의
+// 스토리 타입 정의
 type Story = {
   five_id?: number;
   ten_id?: number;
@@ -30,27 +30,30 @@ type Story = {
   finished: boolean;
 };
 
+// 네비게이션 스택 타입 정의
 type RootStackParamList = {
   StoryInfoReview: { story: Story };
 };
 
-const StoryReadCategory = () => {
+const StoryReadCategory: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // 상태값
+  // 상태값: 모달 표시 여부, 선택된 스토리, 스토리 목록
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedStory, setSelectedStory] = useState<Story | null>(null); // 선택된 스토리 상태
-  const [stories, setStories] = useState<Story[]>([]); // 타입을 Story 배열로 설정
-  const [activeCategory, setActiveCategory] = useState<string>('전체');
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [stories, setStories] = useState<Story[]>([]);
+  const token = useSelector((state: RootState) => state.auth.token);
 
-  useEffect(() => {
-    fetchAllCategories(); // 컴포넌트가 처음 마운트될 때 전체 카테고리의 데이터를 가져옴
-  }, []);
-
+  // API URL
   const apiUrl = Config.API_URL;
 
-  // 전체 카테고리 데이터를 가져오는 함수
+  // 페이지 로드 시 전체 카테고리 스토리 목록을 가져옴
+  useEffect(() => {
+    fetchAllCategories();
+  }, []);
+
+  // 전체 카테고리 스토리 목록을 가져오는 함수
   const fetchAllCategories = async () => {
     try {
       const [fiveResponse, tenResponse, fifteenResponse] = await Promise.all([
@@ -66,11 +69,11 @@ const StoryReadCategory = () => {
       ];
       setStories(allStories);
     } catch (error) {
-      console.error('Error fetching all stories:', error);
+      console.error('전체 스토리 데이터를 불러오는 중 에러 발생:', error);
     }
   };
 
-  // 카테고리에 따른 데이터를 가져오는 함수
+  // 특정 카테고리의 스토리 목록을 가져오는 함수
   const fetchStoriesByCategory = async (category: string) => {
     try {
       let response;
@@ -89,11 +92,14 @@ const StoryReadCategory = () => {
       }
       setStories(response.data.items);
     } catch (error) {
-      console.error(`Error fetching ${category} stories:`, error);
+      console.error(
+        `${category} 카테고리의 스토리 데이터를 불러오는 중 에러 발생:`,
+        error,
+      );
     }
   };
 
-  // 리스트 항목 클릭 핸들러
+  // 리스트 아이템 클릭 시 상세 스토리 데이터를 가져오는 함수
   const handleListPress = async (story: Story) => {
     try {
       let detailUrl = '';
@@ -107,26 +113,19 @@ const StoryReadCategory = () => {
 
       if (detailUrl) {
         const response = await axios.get(detailUrl);
-        const selectedStoryData = response.data;
-        console.log('Selected Story:', selectedStoryData);
-        setSelectedStory(selectedStoryData); // Set full story for navigation
-        setIsModalVisible(true); // Show modal
-      } else {
-        console.error('No valid ID for the story.');
+        setSelectedStory(response.data); // 선택된 스토리 데이터 저장
+        setIsModalVisible(true); // 모달 표시
       }
     } catch (error) {
-      console.error('Error fetching story detail:', error);
+      console.error('스토리 상세 정보를 가져오는 중 에러 발생:', error);
     }
   };
 
-  const token = useSelector((state: RootState) => state.auth.token);
-
-  // 모달 확인 버튼 핸들러
+  // 모달의 '확인' 버튼 클릭 시 실행되는 함수
   const handleConfirm = async () => {
     setIsModalVisible(false);
     if (!selectedStory) return;
 
-    const apiUrl = Config.API_URL;
     let endpoint = '';
     let requestData = {
       fifteenId: 0,
@@ -134,7 +133,6 @@ const StoryReadCategory = () => {
       tenId: 0,
     };
 
-    // 스토리 ID에 맞게 requestData를 설정합니다.
     if (selectedStory.five_id) {
       endpoint = `${apiUrl}/api/v1/star/createStar/five`;
       requestData.fiveId = selectedStory.five_id;
@@ -151,26 +149,25 @@ const StoryReadCategory = () => {
         headers: {
           accept: '*/*',
           'Content-Type': 'application/json',
-          'X-AUTH-TOKEN': token, // 여기에 실제 토큰을 사용
+          'X-AUTH-TOKEN': token,
         },
       });
 
       if (response.status === 200) {
-        console.log('Story read successfully started:', response.data);
-        // 성공적으로 API 요청이 완료되면 StoryInfoReview 화면으로 이동
-        navigation.navigate('StoryInfoReview', { story: selectedStory });
+        console.log('스토리 읽기를 성공적으로 시작했습니다:', response.data);
+        navigation.navigate('StoryInfoReview', { story: selectedStory }); // StoryInfoReview로 이동
       }
     } catch (error) {
-      console.error('Error starting story read:', error);
-      // 실패 시 처리
+      console.error('스토리 읽기 시작 중 에러 발생:', error);
     }
   };
 
-  // 모달 취소 버튼 핸들러
+  // 모달의 '취소' 버튼 클릭 시 실행되는 함수
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
+  // 스토리 썸네일을 결정하는 함수
   const getThumbnailSource = (story: Story) => {
     switch (story.thumbnail) {
       case 'parasite.jpeg':
@@ -192,40 +189,21 @@ const StoryReadCategory = () => {
         <Black16px>다양한 앤딩들이 있어요</Black16px>
         <SearchContainer>
           <SearchInput placeholder="찾고 계신 앤딩을 검색해보세요" />
-          <Image
-            source={require('../../assets/images/searchImg.png')}
-            style={{ width: 14, height: 14 }}
-          />
+          <SearchIcon source={require('../../assets/images/searchImg.png')} />
         </SearchContainer>
-
         <View style={styles.buttonRow}>
-          <CategoryButton
-            text="전체"
-            onPress={() => {
-              setActiveCategory('전체');
-              fetchAllCategories();
-            }}
-          />
+          <CategoryButton text="전체" onPress={() => fetchAllCategories()} />
           <CategoryButton
             text="단편"
-            onPress={() => {
-              setActiveCategory('단편');
-              fetchStoriesByCategory('단편');
-            }}
+            onPress={() => fetchStoriesByCategory('단편')}
           />
           <CategoryButton
             text="중편"
-            onPress={() => {
-              setActiveCategory('중편');
-              fetchStoriesByCategory('중편');
-            }}
+            onPress={() => fetchStoriesByCategory('중편')}
           />
           <CategoryButton
             text="장편"
-            onPress={() => {
-              setActiveCategory('장편');
-              fetchStoriesByCategory('장편');
-            }}
+            onPress={() => fetchStoriesByCategory('장편')}
           />
         </View>
         <ScrollView>
@@ -235,8 +213,8 @@ const StoryReadCategory = () => {
               imageSource={getThumbnailSource(story)}
               rank={index + 1}
               title={story.title}
-              likes="좋아요 1.5K" // 임시로 하드코딩
-              endings="앤딩작 10개" // 임시로 하드코딩
+              likes="좋아요 12개"
+              endings="앤딩작 5개"
               onPress={() => handleListPress(story)}
             />
           ))}
@@ -276,6 +254,10 @@ const SearchContainer = styled.View`
   height: 40px;
   border-bottom-width: 0.5px;
   border-bottom-color: #000;
+`;
+const SearchIcon = styled.Image`
+  width: 14px;
+  height: 14px;
 `;
 
 const SearchInput = styled(TextInput)`

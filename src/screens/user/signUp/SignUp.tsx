@@ -404,7 +404,7 @@ const NextButton = styled(TouchableOpacity)`
   width: 306px;
   height: 44px;
   flex-shrink: 0;
-  background-color: #ff5d5d;
+  background-color: #ff7d7d;
   padding: 10px;
   border-radius: 4px;
   align-items: center;
@@ -423,7 +423,7 @@ const GenderSelect = styled.View`
 `;
 
 const GenderButton = styled.TouchableOpacity<{ selected: boolean }>`
-  background-color: ${({ selected }) => (selected ? '#ff5d5d' : '#d9d9d9')};
+  background-color: ${({ selected }) => (selected ? '#ff7d7d' : '#d9d9d9')};
   padding: 10px;
   border-radius: 8px;
   width: 40%;
@@ -444,7 +444,7 @@ const SignUpImgBox = styled.View`
 const LinktoLogin = styled(TouchableOpacity)`
   width: 306px;
   height: 44px;
-  background-color: #ff5d5d;
+  background-color: #ff7d7d;
   padding: 10px;
   border-radius: 4px;
   align-items: center;
