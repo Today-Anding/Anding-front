@@ -59,9 +59,7 @@ const StoryRoomSelectScreen: React.FC = () => {
           );
           setRoomCount15(response.data['이어진 앤딩(글) 수']);
         }
-      } catch (error) {
-        console.error('Failed to fetch room count:', error);
-      }
+      } catch (error) {}
     };
 
     [5, 10, 15].forEach(fetchRoomCount);
@@ -93,17 +91,17 @@ const StoryRoomSelectScreen: React.FC = () => {
         <RoomButton onPress={() => handleRoomSelect(5)}>
           <Image source={require('../../assets/images/IsRoomTrue.png')} />
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount5}/5</RoomPeopleText>
+          <RoomPeopleText>{roomCount5 + 1}/5</RoomPeopleText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(10)}>
           <Image source={require('../../assets/images/IsRoomFalse.png')} />
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount10}/10</RoomPeopleText>
+          <RoomPeopleText>{roomCount10 + 1}/10</RoomPeopleText>
         </RoomButton>
         <RoomButton onPress={() => handleRoomSelect(15)}>
           <Image source={require('../../assets/images/IsRoomFalse.png')} />
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount15}/15</RoomPeopleText>
+          <RoomPeopleText>{roomCount15 + 1}/15</RoomPeopleText>
         </RoomButton>
       </ButtonContainer>
       <StoryTipContainer>

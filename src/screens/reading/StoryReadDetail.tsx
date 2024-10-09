@@ -32,6 +32,7 @@ function StoryReadDetail() {
   const { title, five_id, ten_id, fifteen_id } = route.params;
 
   const [storyDetails, setStoryDetails] = useState<StoryDetail[]>([]); // API로 받아온 데이터를 저장할 상태
+  const [description, setDescription] = useState<string | null>(null); // 설명 데이터를 저장할 상태
 
   const apiUrl = Config.API_URL;
 
@@ -53,15 +54,39 @@ function StoryReadDetail() {
       }
 
       const response = await axios.get(endpoint);
-      setStoryDetails(response.data.items); // 받은 데이터를 상태에 저장
+      setStoryDetails(response.data.items);
     } catch (error) {
       console.error('Error fetching story details:', error);
+    }
+  };
+
+  // 설명 데이터를 가져오는 함수
+  const fetchStoryDescription = async () => {
+    try {
+      let endpoint = '';
+      if (five_id) {
+        endpoint = `${apiUrl}/api/v1/five/getFive/${five_id}`;
+      } else if (ten_id) {
+        endpoint = `${apiUrl}/api/v1/ten/getTen/${ten_id}`;
+      } else if (fifteen_id) {
+        endpoint = `${apiUrl}/api/v1/fifteen/getFifteen/${fifteen_id}`;
+      }
+
+      if (!endpoint) {
+        throw new Error('Invalid ID for fetching story description.');
+      }
+
+      const response = await axios.get(endpoint);
+      setDescription(response.data.description); // 받은 설명 데이터를 상태에 저장
+    } catch (error) {
+      console.error('Error fetching story description:', error);
     }
   };
 
   // 컴포넌트가 마운트될 때 데이터를 가져옴
   useEffect(() => {
     fetchStoryDetails();
+    fetchStoryDescription();
   }, []);
 
   return (
@@ -71,13 +96,26 @@ function StoryReadDetail() {
           <Black16px>{`'${title}'의 앤딩입니다.`}</Black16px>
           <GobackButton />
         </HeaderContainer>
+        {description && (
+          <View>
+            <TurnContainer>
+              <Line />
+              <TextContainer>
+                <TurnText>1번째 이야기</TurnText>
+                <Black12px>시놉시스</Black12px>
+              </TextContainer>
+              <Line />
+            </TurnContainer>
+            <ContentText>{description}</ContentText>
+          </View>
+        )}
         {storyDetails.map((story, index) => (
           <View key={index}>
             <TurnContainer>
               <Line />
               <TextContainer>
-                <TurnText>{`앤딩 ${index + 1}`}</TurnText>
-                <Black12px>{story.author}</Black12px>
+                <TurnText>{`${index + 2}번째 이야기`}</TurnText>
+                <Black12px>{`작가 : ${story.author}`}</Black12px>
               </TextContainer>
               <Line />
             </TurnContainer>
