@@ -69,6 +69,18 @@ const StoryRoomSelectScreen: React.FC = () => {
     navigation.navigate('StoryTurnScreen', { roomSize, storyId, storyTitle });
   };
 
+  const renderRoomButtonImage = (roomCount: number, maxCount: number) => {
+    return (
+      <Image
+        source={
+          roomCount + 1 >= maxCount
+            ? require('../../assets/images/IsRoomTrue.png')
+            : require('../../assets/images/IsRoomFalse.png')
+        }
+      />
+    );
+  };
+
   return (
     <Container>
       <StorySelectBackground>
@@ -88,20 +100,35 @@ const StoryRoomSelectScreen: React.FC = () => {
         </StorySelectWhiteBox>
       </StorySelectBackground>
       <ButtonContainer>
-        <RoomButton onPress={() => handleRoomSelect(5)}>
-          <Image source={require('../../assets/images/IsRoomTrue.png')} />
+        <RoomButton
+          onPress={() => handleRoomSelect(5)}
+          disabled={roomCount5 + 1 >= 5}
+        >
+          {renderRoomButtonImage(roomCount5, 5)}
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount5 + 1}/5</RoomPeopleText>
+          <RoomPeopleText>
+            {roomCount5 + 1 >= 5 ? '마감' : `${roomCount5 + 1}/5`}
+          </RoomPeopleText>
         </RoomButton>
-        <RoomButton onPress={() => handleRoomSelect(10)}>
-          <Image source={require('../../assets/images/IsRoomFalse.png')} />
+        <RoomButton
+          onPress={() => handleRoomSelect(10)}
+          disabled={roomCount10 + 1 >= 10}
+        >
+          {renderRoomButtonImage(roomCount10, 10)}
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount10 + 1}/10</RoomPeopleText>
+          <RoomPeopleText>
+            {roomCount10 + 1 >= 10 ? '마감' : `${roomCount10 + 1}/10`}
+          </RoomPeopleText>
         </RoomButton>
-        <RoomButton onPress={() => handleRoomSelect(15)}>
-          <Image source={require('../../assets/images/IsRoomFalse.png')} />
+        <RoomButton
+          onPress={() => handleRoomSelect(15)}
+          disabled={roomCount15 + 1 >= 15}
+        >
+          {renderRoomButtonImage(roomCount15, 15)}
           <RoomButtonText>{storyTitle}</RoomButtonText>
-          <RoomPeopleText>{roomCount15 + 1}/15</RoomPeopleText>
+          <RoomPeopleText>
+            {roomCount15 + 1 >= 15 ? '마감' : `${roomCount15 + 1}/15`}
+          </RoomPeopleText>
         </RoomButton>
       </ButtonContainer>
       <StoryTipContainer>

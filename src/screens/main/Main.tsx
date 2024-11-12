@@ -29,6 +29,7 @@ type MainScreenNavigationProp = NativeStackNavigationProp<
 const Main: React.FC = () => {
   const navigation = useNavigation<MainScreenNavigationProp>();
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [gender, setGender] = useState<string | null>(null);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const [recentTitles, setRecentTitles] = useState<string[]>([]);
@@ -38,13 +39,13 @@ const Main: React.FC = () => {
     setSidebarVisible(false);
   };
 
+  const token = useSelector((state: RootState) => state.auth.token);
+
   useFocusEffect(
     useCallback(() => {
       setSidebarVisible(false);
     }, []),
   );
-
-  const token = useSelector((state: RootState) => state.auth.token);
 
   useEffect(() => {
     const fetchRecentTitles = async () => {
@@ -67,7 +68,25 @@ const Main: React.FC = () => {
       }
     };
 
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/api/v1/user/getUser`,
+          {
+            headers: {
+              'X-AUTH-TOKEN': token,
+              accept: '*/*',
+            },
+          },
+        );
+        setGender(response.data.gender);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
     fetchRecentTitles();
+    fetchUserData();
   }, [token]);
 
   const carouselItems = [
@@ -99,7 +118,15 @@ const Main: React.FC = () => {
       </MainScreenBackgroundPink>
       <BoxContainer>
         <ImageWrapper>
-          <MainImage source={require('../../assets/images/MainSample1.png')} />
+          {gender === 'woman' ? (
+            <MainImage
+              source={require('../../assets/images/MainSample1.png')}
+            />
+          ) : (
+            <MainImage
+              source={require('../../assets/images/MainSample2.png')}
+            />
+          )}
         </ImageWrapper>
         <TextContainer>
           <Button onPress={() => navigation.navigate('StoryReadCategory')}>
@@ -154,6 +181,7 @@ const MainScreenBackgroundPink = styled.View`
 const MainText = styled.View`
   gap: 10px;
   align-items: center;
+  margin-top: 10px;
 `;
 
 const HeaderBox = styled.View`

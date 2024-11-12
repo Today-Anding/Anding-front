@@ -17,8 +17,8 @@ type ListProps = {
 };
 
 const ListDiv = styled.TouchableOpacity`
-  width: 271px;
-  height: 85px;
+  width: 300px;
+  height: 100px;
   flex-direction: row;
   align-items: center;
   border-radius: 16px;
@@ -34,16 +34,16 @@ const LankDiv = styled.View`
   align-items: center;
   border-radius: 24px;
   border: 1px solid #000;
-  margin-left: 12px;
+  margin-left: 20px;
 `;
 
 const TextContainer = styled.View`
   flex: 1;
   justify-content: center;
-  margin-left: 12px;
+  margin-left: 20px;
+  gap: 4px;
 `;
 
-// List 컴포넌트 정의
 export function List({
   imageSource,
   rank,

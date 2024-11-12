@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import GobackButton from '../../components/button/GobackButton';
 import {
-  Black10px,
   Black12pxLight,
   Black16px,
   Black24pxBold,
-  Gray10px,
 } from '../../components/text/Text';
 import MyPageCarousel from '../../components/carousel/MypageCarousel';
 import axios from 'axios';
@@ -17,6 +15,9 @@ import Config from 'react-native-config';
 interface UserInfo {
   name: string;
   account: string;
+  gender: string;
+  nickname: string;
+  phone: string;
 }
 
 function MyPage() {
@@ -39,8 +40,8 @@ function MyPage() {
           },
         });
 
-        const { name, account } = response.data;
-        setUserInfo({ name, account });
+        const { name, account, gender, nickname, phone } = response.data;
+        setUserInfo({ name, account, gender, nickname, phone });
       } catch (error) {
         console.error('Failed to fetch user info:', error);
       }
@@ -58,24 +59,20 @@ function MyPage() {
         <MypageContent>
           <MypageInfo>
             <MypageInfoLeft>
-              <Black24pxBold>
-                {userInfo ? userInfo.name : '홍길동'}
-              </Black24pxBold>
-              <Gray10px>
-                {userInfo ? userInfo.account : '사용자@이메일.co.kr'}
-              </Gray10px>
+              {userInfo ? (
+                <>
+                  <Black24pxBold>{userInfo.name}</Black24pxBold>
+                  <Black12pxLight>닉네임 : {userInfo.account}</Black12pxLight>
+                  <Black12pxLight>성별: {userInfo.gender}</Black12pxLight>
+                  <Black12pxLight>닉네임: {userInfo.nickname}</Black12pxLight>
+                  <Black12pxLight>전화번호: {userInfo.phone}</Black12pxLight>
+                </>
+              ) : (
+                <Black16px>로딩 중...</Black16px>
+              )}
             </MypageInfoLeft>
           </MypageInfo>
-          <MypageListBox>
-            <Black12pxLight>내가 쓰고있는 글</Black12pxLight>
-            <MypageStroke>
-              <Black10px>리스트</Black10px>
-            </MypageStroke>
-            <Black12pxLight>내가 좋아요 한 글</Black12pxLight>
-            <MypageStroke>
-              <Black10px>리스트</Black10px>
-            </MypageStroke>
-          </MypageListBox>
+          <Divider />
         </MypageContent>
         <MypageCarouselBox>
           <Black16px>앤딩 조회 내역</Black16px>
@@ -120,23 +117,18 @@ const MypageInfo = styled.View`
 `;
 
 const MypageInfoLeft = styled.View`
-  gap: 4px;
+  gap: 10px;
 `;
 
-const MypageListBox = styled.View`
-  margin-bottom: 26px;
-`;
-
-const MypageStroke = styled.View`
-  width: 275px;
-  height: 72px;
-  border-top-width: 1px;
-  border-top-color: #ff7d7d;
-  background-color: #fff;
-  margin-bottom: 4px;
+const Divider = styled.View`
+  height: 1px;
+  width: 90%;
+  background-color: #ff7d7d;
+  margin-top: 20px;
 `;
 
 const MypageCarouselBox = styled.View`
+  margin-top: 50px;
   align-items: center;
 `;
 
