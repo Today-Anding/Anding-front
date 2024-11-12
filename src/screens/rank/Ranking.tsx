@@ -10,7 +10,12 @@ import {
   Pink5px,
 } from '../../components/text/Text';
 import { List } from '../../components/list/List';
-import SampleListImg from '../../assets/images/SampleListImg.png';
+import SampleListImg1 from '../../assets/images/ListImg1.png';
+import SampleListImg2 from '../../assets/images/ListImg2.png';
+import SampleListImg3 from '../../assets/images/ListImg3.png';
+import SampleListImg4 from '../../assets/images/ListImg4.png';
+import ListImgWoman from '../../assets/images/ListWoman.png';
+import ListImgman from '../../assets/images/ListMan.png';
 
 interface RankingProps {}
 
@@ -19,6 +24,69 @@ const Ranking: React.FC<RankingProps> = () => {
   const [selectedBox, setSelectedBox] = useState<'cumulative' | 'writer'>(
     'cumulative',
   );
+
+  // 하드코딩된 데이터
+  const cumulativeData = [
+    {
+      rank: 1,
+      title: '꿀벌의 예언',
+      likes: '좋아요 12개',
+      endings: '앤딩작 5개',
+      imageSource: SampleListImg1,
+    },
+    {
+      rank: 2,
+      title: '우리 안 사귀어!',
+      likes: '좋아요 8개',
+      endings: '앤딩작 5개',
+      imageSource: SampleListImg2,
+    },
+    {
+      rank: 3,
+      title: '제국의 하인',
+      likes: '좋아요 5개',
+      endings: '앤딩작 5개',
+      imageSource: SampleListImg3,
+    },
+    {
+      rank: 4,
+      title: '어느 마법사의 식당',
+      likes: '좋아요 3개',
+      endings: '앤딩작 5개',
+      imageSource: SampleListImg4,
+    },
+  ];
+
+  const writerData = [
+    {
+      rank: 1,
+      title: '유경빈',
+      likes: '좋아요 20개',
+      endings: '앤딩작 10개',
+      imageSource: ListImgWoman,
+    },
+    {
+      rank: 2,
+      title: '배채은',
+      likes: '좋아요 17개',
+      endings: '앤딩작 9개',
+      imageSource: ListImgWoman,
+    },
+    {
+      rank: 3,
+      title: '김미희',
+      likes: '좋아요 12개',
+      endings: '앤딩작 5개',
+      imageSource: ListImgWoman,
+    },
+    {
+      rank: 4,
+      title: '홍길동',
+      likes: '좋아요 8개',
+      endings: '앤딩작 3개',
+      imageSource: ListImgman,
+    },
+  ];
 
   return (
     <RankingScreen>
@@ -76,14 +144,14 @@ const Ranking: React.FC<RankingProps> = () => {
           {selectedBox === 'cumulative' && (
             <View>
               <TextContent>누적 랭킹</TextContent>
-              {[...Array(10)].map((_, i) => (
+              {cumulativeData.map(item => (
                 <List
-                  key={i}
-                  imageSource={SampleListImg as ImageSourcePropType}
-                  rank={i + 1}
-                  title="별에서 온 그대"
-                  likes="좋아요 1.5K"
-                  endings="앤딩작 10개"
+                  key={item.rank}
+                  imageSource={item.imageSource as ImageSourcePropType}
+                  rank={item.rank}
+                  title={item.title}
+                  likes={item.likes}
+                  endings={item.endings}
                   onPress={() => console.log('List item pressed')}
                 />
               ))}
@@ -92,14 +160,14 @@ const Ranking: React.FC<RankingProps> = () => {
           {selectedBox === 'writer' && (
             <View>
               <TextContent>작가 랭킹</TextContent>
-              {[...Array(10)].map((_, i) => (
+              {writerData.map(item => (
                 <List
-                  key={i}
-                  imageSource={SampleListImg as ImageSourcePropType}
-                  rank={i + 1}
-                  title="유채은"
-                  likes="좋아요 1.5K"
-                  endings="앤딩작 10개"
+                  key={item.rank}
+                  imageSource={item.imageSource as ImageSourcePropType}
+                  rank={item.rank}
+                  title={item.title}
+                  likes={item.likes}
+                  endings={item.endings}
                   onPress={() => console.log('List item pressed')}
                 />
               ))}
@@ -119,13 +187,13 @@ const RankingScreen = styled.View`
 `;
 
 const RankingPinkBackground = styled.View`
-  flex: 0.6;
+  flex: 0.8;
   background: #ff7d7d;
   align-items: center;
 `;
 
 const RankingHead = styled.View`
-  padding-top: 30px;
+  padding-top: 35px;
   padding-left: 100px;
   flex-direction: row;
   align-items: center;
@@ -141,7 +209,7 @@ const BigWhiteBox = styled.View`
   flex-shrink: 0;
   border-radius: 15px;
   background: #fff;
-  margin-top: 21px;
+  margin-top: 30px;
   padding-left: 23px;
   padding-top: 26px;
   flex-direction: row;
@@ -154,8 +222,9 @@ const BigWhiteBoxLeft = styled.View`
 const SmallGray7 = styled.Text`
   color: #a3a3a3;
   font-family: 'Noto Sans KR';
-  font-size: 7px;
+  font-size: 10px;
   font-weight: 400;
+  padding-top: 7px;
 `;
 
 const SmallWhiteBox = styled.View`
@@ -164,7 +233,7 @@ const SmallWhiteBox = styled.View`
   border-radius: 15px;
   background: #fff;
   flex-direction: row;
-  margin-top: 9px;
+  margin-top: 30px;
   align-items: center;
   padding: 9px;
   justify-content: center;
@@ -193,11 +262,15 @@ const ScrollViewContainer = styled.View`
 const TextContent = styled.Text`
   color: #000;
   font-family: 'Noto Sans KR';
-  font-size: 10px;
+  font-size: 14px;
+  padding-top: 7px;
 `;
 
 const StyledImage = styled.Image``;
 
-const StyledScrollView = styled.ScrollView`
-  padding-bottom: 20px;
-`;
+const StyledScrollView = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 50,
+  },
+}))``;

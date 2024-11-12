@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Image, Alert } from 'react-native';
+import { Animated, Image } from 'react-native';
 import styled from 'styled-components/native';
 import {
   useNavigation,
@@ -190,7 +190,7 @@ function StoryTurnScreen() {
               </TurnButton>
             ))
           ) : (
-            <Black10px>완료된 앤딩입니다.</Black10px>
+            <Black10px>앤딩 로딩중입니다.</Black10px>
           )}
         </TurnBox>
       </TurnBoxContainer>

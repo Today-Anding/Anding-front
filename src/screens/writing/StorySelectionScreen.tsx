@@ -27,8 +27,8 @@ const StorySelectScreen: React.FC = () => {
     { id: '2', title: '제국의 하인', route: 'StoryRoomSelectScreen' },
     { id: '3', title: '토마토가 돼라', route: 'StoryRoomSelectScreen' },
     { id: '4', title: '전자오락수호대', route: 'StoryRoomSelectScreen' },
-    { id: '5', title: '우리 안 사귀어!!', route: 'StoryRoomSelectScreen' },
-    { id: '6', title: '어느 마법사의 식당', route: 'StoryRoomSelectScreen' },
+    { id: '5', title: '어느 마법사의 식당', route: 'StoryRoomSelectScreen' },
+    { id: '6', title: '우리 안 사귀어!!', route: 'StoryRoomSelectScreen' },
   ];
 
   const renderItem = ({ item }: { item: StoryItem }) => {

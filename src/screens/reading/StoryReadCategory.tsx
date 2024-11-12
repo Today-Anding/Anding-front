@@ -124,42 +124,7 @@ const StoryReadCategory: React.FC = () => {
   // 모달의 '확인' 버튼 클릭 시 실행되는 함수
   const handleConfirm = async () => {
     setIsModalVisible(false);
-    if (!selectedStory) return;
-
-    let endpoint = '';
-    let requestData = {
-      fifteenId: 0,
-      fiveId: 0,
-      tenId: 0,
-    };
-
-    if (selectedStory.five_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/five`;
-      requestData.fiveId = selectedStory.five_id;
-    } else if (selectedStory.ten_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/ten`;
-      requestData.tenId = selectedStory.ten_id;
-    } else if (selectedStory.fifteen_id) {
-      endpoint = `${apiUrl}/api/v1/star/createStar/fifteen`;
-      requestData.fifteenId = selectedStory.fifteen_id;
-    }
-
-    try {
-      const response = await axios.post(endpoint, requestData, {
-        headers: {
-          accept: '*/*',
-          'Content-Type': 'application/json',
-          'X-AUTH-TOKEN': token,
-        },
-      });
-
-      if (response.status === 200) {
-        console.log('스토리 읽기를 성공적으로 시작했습니다:', response.data);
-        navigation.navigate('StoryInfoReview', { story: selectedStory }); // StoryInfoReview로 이동
-      }
-    } catch (error) {
-      console.error('스토리 읽기 시작 중 에러 발생:', error);
-    }
+    navigation.navigate('StoryInfoReview', { story: selectedStory }); 
   };
 
   // 모달의 '취소' 버튼 클릭 시 실행되는 함수
@@ -170,10 +135,18 @@ const StoryReadCategory: React.FC = () => {
   // 스토리 썸네일을 결정하는 함수
   const getThumbnailSource = (story: Story) => {
     switch (story.thumbnail) {
-      case 'parasite.jpeg':
-        return require('../../assets/images/parasite.jpeg');
-      case 'oldboy.jpeg':
-        return require('../../assets/images/oldboy.jpeg');
+      case 'anding1.png':
+        return require('../../assets/images/anding1.png');
+      case 'anding2.png':
+        return require('../../assets/images/anding2.png');
+      case 'anding3.png':
+        return require('../../assets/images/anding3.png');
+      case 'anding4.png':
+        return require('../../assets/images/anding4.png');
+      case 'anding5.png':
+        return require('../../assets/images/anding5.png');
+      case 'anding6.png':
+        return require('../../assets/images/anding6.png');
       default:
         return SampleListImg;
     }

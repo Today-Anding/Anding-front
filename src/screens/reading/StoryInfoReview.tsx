@@ -8,7 +8,8 @@ import ReviewComponent from '../../components/review/Review';
 import InterestImg from '../../assets/images/interestImg.png';
 import ReviewCountImg from '../../assets/images/CountReviewImg.png';
 import AndingDetailImg from '../../assets/images/AndingDetailBtn.png';
-import LikeBtnImg from '../../assets/images/LikeBtn.png';
+import HeartBtnImgFull from '../../assets/images/LikeBtn-full.png';
+import HeartBtnImgEmpty from '../../assets/images/LikeBtn.png';
 import StarBtnImgFull from '../../assets/images/SaveBtn-full.png';
 import StarBtnImgEmpty from '../../assets/images/SaveBtn.png';
 import Modal from '../../components/modal/Modal';
@@ -57,7 +58,8 @@ const StoryInfoReview: React.FC = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', message: '' });
-  const [isSaved, setIsSaved] = useState(true);
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+  const [isSaved, setIsSaved] = useState(false); // 저장 상태 관리
 
   const handleAndingDetailPress = () => {
     if (story) {
@@ -102,25 +104,53 @@ const StoryInfoReview: React.FC = () => {
     }
   };
 
-  const handleLikePress = () => {
+  const handleLikePress = async () => {
     if (!story) return;
-    const endpoint = `${API_URL}/api/v1/liked/createLikedForAnding/${
-      story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
-    }`;
-    handlePress(endpoint, getRequestData(story), '좋아요');
+
+    const endpoint = isLiked
+      ? `${API_URL}/api/v1/liked/createLikedForAnding/${
+          story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+        }`
+      : `${API_URL}/api/v1/liked/createLikedForAnding/${
+          story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+        }`;
+
+    try {
+      await handlePress(
+        endpoint,
+        getRequestData(story),
+        isLiked ? '좋아요 취소' : '좋아요',
+      );
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error(
+        `Error during ${isLiked ? '좋아요 취소' : '좋아요'}:`,
+        error,
+      );
+    }
   };
 
-  const handleSavePress = () => {
+  const handleSavePress = async () => {
     if (!story) return;
-    const endpoint = `${API_URL}/api/v1/star/createStar/${
-      story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
-    }`;
-    handlePress(
-      endpoint,
-      getRequestData(story),
-      isSaved ? '저장 취소' : '저장',
-    );
-    setIsSaved(!isSaved);
+
+    const endpoint = isSaved
+      ? `${API_URL}/api/v1/star/createStar/${
+          story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+        }`
+      : `${API_URL}/api/v1/star/createStar/${
+          story.five_id ? 'five' : story.ten_id ? 'ten' : 'fifteen'
+        }`;
+
+    try {
+      await handlePress(
+        endpoint,
+        getRequestData(story),
+        isSaved ? '저장 취소' : '저장',
+      );
+      setIsSaved(!isSaved);
+    } catch (error) {
+      console.error(`Error during ${isSaved ? '저장 취소' : '저장'}:`, error);
+    }
   };
 
   const handleConfirm = () => setModalVisible(false);
@@ -136,11 +166,22 @@ const StoryInfoReview: React.FC = () => {
   }
 
   const getThumbnailSource = () => {
-    const thumbnails: { [key: string]: any } = {
-      'parasite.jpeg': require('../../assets/images/parasite.jpeg'),
-      'oldboy.jpeg': require('../../assets/images/oldboy.jpeg'),
-    };
-    return thumbnails[story.thumbnail] || SampleListImg;
+    switch (story.thumbnail) {
+      case 'anding1.png':
+        return require('../../assets/images/anding1.png');
+      case 'anding2.png':
+        return require('../../assets/images/anding2.png');
+      case 'anding3.png':
+        return require('../../assets/images/anding3.png');
+      case 'anding4.png':
+        return require('../../assets/images/anding4.png');
+      case 'anding5.png':
+        return require('../../assets/images/anding5.png');
+      case 'anding6.png':
+        return require('../../assets/images/anding6.png');
+      default:
+        return SampleListImg;
+    }
   };
 
   return (
@@ -185,11 +226,11 @@ const StoryInfoReview: React.FC = () => {
           <LeftBottomContainer>
             <InterestBox>
               <Image source={InterestImg} />
-              <White10px>관심 500개</White10px>
+              <White10px>관심 12개</White10px>
             </InterestBox>
             <ReviewCountBox>
               <Image source={ReviewCountImg} />
-              <White10px>리뷰수 400개</White10px>
+              <White10px>리뷰수 0개</White10px>
             </ReviewCountBox>
           </LeftBottomContainer>
           <RightBottomContainer>
@@ -197,7 +238,7 @@ const StoryInfoReview: React.FC = () => {
               <Image source={AndingDetailImg} />
             </AndingDetailButton>
             <LikeButton onPress={handleLikePress}>
-              <Image source={LikeBtnImg} />
+              <Image source={isLiked ? HeartBtnImgFull : HeartBtnImgEmpty} />
             </LikeButton>
             <SaveButton onPress={handleSavePress}>
               <Image source={isSaved ? StarBtnImgFull : StarBtnImgEmpty} />

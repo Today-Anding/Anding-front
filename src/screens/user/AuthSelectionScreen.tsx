@@ -18,14 +18,6 @@ function AuthSelectionScreen() {
         새로운 앤딩 작가가 되고 싶다면,
       </Black14px>
       <Button navigateTo={'SignUp'} text={'회원가입'} style={buttonStyle} />
-      <SnsBox>
-        <Stroke />
-        <Black10px>SNS 계정으로 로그인</Black10px>
-        <Stroke />
-      </SnsBox>
-      <NaverButton>
-        <NaverButtonText>N</NaverButtonText>
-      </NaverButton>
     </Container>
   );
 }
